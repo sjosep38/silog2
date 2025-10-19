@@ -237,6 +237,9 @@ let receiptContent = `
             <hr>
             <p class="date-time">${dateTime}</p>
             <h5>ORDER NUMBER: ${currentTransactionNumber}</h5>
+			<p><strong>Invoice #${receiptNumber}</strong></p>
+
+
             <table>
                 <tr>
                     <th>Item</th>
@@ -335,6 +338,7 @@ function addNewItem(content) {
   cart.prepend(newItem); // Adds to top of the list
   cart.scrollTop = 0;    // Keeps the view at the top (newest visible)
 }
+
 
 
 
