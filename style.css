@@ -368,9 +368,11 @@ button img {
   margin-bottom: 10px;
   color: red;
   overflow-y: auto;
+
   display: flex;
-  flex-direction: column-reverse; /* 👈 newest on top */
+  flex-direction: column-reverse; /* 👈 Newest items appear on top */
 }
+
 
 
 
@@ -387,4 +389,5 @@ h2 {
   background-color: red;
   text-align: center;
 }
+
 
