@@ -29,6 +29,17 @@ function addProduct(name, price) {
     displayCart();
 }
 
+function displayCart() {
+    const cart = document.getElementById("cart");
+    cart.innerHTML = "";
+
+    products.forEach((product, index) => {
+        const item = document.createElement("div");
+        item.className = "cart-item";
+        item.textContent = `${product.name} x${product.quantity} - ₱${product.totalPrice.toFixed(2)}`;
+        cart.appendChild(item);
+    });
+}
 
 
 // Remove product from the cart by index
@@ -343,4 +354,5 @@ function addNewItem(content) {
   cart.prepend(newItem); // Adds to top of the list
   cart.scrollTop = 0;    // Keeps the view at the top (newest visible)
 }
+
 
