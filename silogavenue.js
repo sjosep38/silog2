@@ -115,7 +115,7 @@ function applyDiscount() {
 }
 
 let pressTimer;
-let longPressDuration = 10000;  // Duration in seconds (10 second)
+let longPressDuration = 1000;  // Duration in seconds (10 second)
 
 // Start long press
 function startPress(event, productName) {
@@ -322,4 +322,5 @@ let receiptContent = `
         discountAmountElement.textContent = `Discount : ₱${discountAmount.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
     }
 }
+
 
