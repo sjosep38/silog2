@@ -364,16 +364,6 @@ button img {
   border-radius: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 260px;
-  min-height: 375px;
-  margin-bottom: 10px;
-  color: red;
-}
-.countercart {
-  background-color: white;
-  padding: 5px;
-  border-radius: 5px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 260px;
   height: 375px;
   margin-bottom: 10px;
   color: red;
@@ -397,3 +387,4 @@ h2 {
   background-color: red;
   text-align: center;
 }
+
