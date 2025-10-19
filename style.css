@@ -378,10 +378,12 @@ button img {
   margin-bottom: 10px;
   color: red;
   overflow-y: auto;
-
   display: flex;
-  flex-direction: column-reverse; /* 👈 Newest items appear on top */
+  flex-direction: column; /* 👈 not column-reverse */
+  justify-content: flex-start; /* 👈 ensure content starts from top */
+  align-items: flex-start;      /* optional: left-align content */
 }
+
 
         .scroll-box {
   width: 100%;
