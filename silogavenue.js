@@ -6,41 +6,16 @@ let discountApplied = false;  // Flag to track if discount is applied
 let dailySales = parseFloat(localStorage.getItem('dailySales')) || 0;
 
 // Add product to cart
-function addProduct(name, price) {
-    const existingProductIndex = products.findIndex(product => product.name === name);
+function addProduct(productName, price) {
+    // Play beep sound
+    let beep = new Audio('sound/store-scanner-beep-90395.mp3');
+    beep.play();
 
-    if (existingProductIndex !== -1) {
-        // Product already in cart — increase quantity and update price
-        products[existingProductIndex].quantity += 1;
-        products[existingProductIndex].totalPrice = products[existingProductIndex].quantity * products[existingProductIndex].price;
-    } else {
-        // New product
-        products.push({ name, price, quantity: 1, totalPrice: price });
-    }
-
-    // Update totals
-    totalPrice = products.reduce((sum, item) => sum + item.totalPrice, 0);
-    discountedTotalPrice = totalPrice;
-    document.getElementById("totalPrice").textContent = totalPrice.toFixed(2);
-    document.getElementById("discountedPrice").textContent = discountedTotalPrice.toFixed(2);
-    document.getElementById("discountedPriceContainer").style.display = "none";
-
-    // Update cart display
-    displayCart();
+    cart.push({ name: productName, price: price });
+    totalPrice += price;
+    updateCart();
+    updateDailySales();
 }
-
-function displayCart() {
-    const cart = document.getElementById("cart");
-    cart.innerHTML = "";
-
-    products.forEach((product, index) => {
-        const item = document.createElement("div");
-        item.className = "cart-item";
-        item.textContent = `${product.name} x${product.quantity} - ₱${product.totalPrice.toFixed(2)}`;
-        cart.appendChild(item);
-    });
-}
-
 
 // Remove product from the cart by index
 function removeProduct(index) {
@@ -354,5 +329,6 @@ function addNewItem(content) {
   cart.prepend(newItem); // Adds to top of the list
   cart.scrollTop = 0;    // Keeps the view at the top (newest visible)
 }
+
 
 
