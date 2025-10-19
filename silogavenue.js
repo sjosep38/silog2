@@ -322,3 +322,11 @@ let receiptContent = `
         discountAmountElement.textContent = `Discount : ₱${discountAmount.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
     }
 }
+
+function addNewItem(content) {
+  const cart = document.querySelector('.countercart');
+  const newItem = document.createElement('div');
+  newItem.textContent = content;
+  cart.prepend(newItem); // Adds to top of the list
+  cart.scrollTop = 0;    // Keeps the view at the top (newest visible)
+}
