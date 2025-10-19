@@ -379,7 +379,7 @@ button img {
   color: red;
   overflow-y: auto;
   display: flex;
-  flex-direction: column; /* 👈 not column-reverse */
+  /* flex-direction: column; 👈 not column-reverse */
   justify-content: flex-start; /* 👈 ensure content starts from top */
   align-items: flex-start;      /* optional: left-align content */
 }
