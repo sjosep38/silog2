@@ -364,8 +364,7 @@ button img {
   border-radius: 5px;                      /* Rounded corners */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);/* Subtle drop shadow */
   width: 260px;                            /* Fixed width */
-  min-height: 375px;                       /* Minimum height */
-  max-height: 375px;                       /* Maximum height (same here, fixed height) */
+  height: 600px;                       /* Minimum height */
   margin-bottom: 10px;                     /* Space below the element */
   color: red;                              /* Text color */
   overflow-y: auto;                        /* Scrollable vertically */
@@ -411,6 +410,7 @@ h2 {
     max-height: 300px;
   }
 }
+
 
 
 
