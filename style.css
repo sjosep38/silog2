@@ -373,6 +373,18 @@ button img {
   flex-direction: column-reverse; /* 👈 Newest items appear on top */
 }
 
+.countercart::-webkit-scrollbar {
+  width: 6px;
+}
+
+.countercart::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.countercart::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
 
 
 
@@ -389,5 +401,6 @@ h2 {
   background-color: red;
   text-align: center;
 }
+
 
 
