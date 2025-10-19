@@ -358,8 +358,8 @@ button img {
   margin-bottom: 10px;
   height: 80px;
 }
-.countercart {
-  background-color: white;                 /* White background for clarity */
+/*.countercart {
+  background-color: white;                  White background for clarity */
   padding: 5px;                            /* Inner spacing */
   border-radius: 5px;                      /* Rounded corners */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);/* Subtle drop shadow */
@@ -371,6 +371,11 @@ button img {
   overflow-y: auto;                        /* Scrollable vertically */
 }
 
+.countercart {
+  display: flex;
+  flex-direction: column-reverse;
+  overflow-y: auto;
+}
 
 
 .countercart::-webkit-scrollbar {
@@ -426,6 +431,7 @@ h2 {
     max-height: 300px;
   }
 }
+
 
 
 
