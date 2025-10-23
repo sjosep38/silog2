@@ -2,7 +2,6 @@ let cart = [];
 let totalPrice = 0;
 let discountApplied = false;  // Flag to track if discount is applied
 
-
 // Retrieve daily sales from localStorage (or default to 0 if not found)
 let dailySales = parseFloat(localStorage.getItem('dailySales')) || 0;
 
@@ -237,9 +236,6 @@ let receiptContent = `
             <hr>
             <p class="date-time">${dateTime}</p>
             <h5>ORDER NUMBER: ${currentTransactionNumber}</h5>
-			<p><strong>Invoice #${receiptNumber}</strong></p>
-
-
             <table>
                 <tr>
                     <th>Item</th>
@@ -262,11 +258,6 @@ let receiptContent = `
 `;
         // Open the print dialog
         const printWindow = window.open();
-		// Get and increment receipt number
-const receiptNumber = receiptCounter;
-receiptCounter++;
-localStorage.setItem('receiptCounter', receiptCounter);
-
         printWindow.document.write(receiptContent);
         printWindow.document.close();
         printWindow.print();
@@ -338,9 +329,6 @@ function addNewItem(content) {
   cart.prepend(newItem); // Adds to top of the list
   cart.scrollTop = 0;    // Keeps the view at the top (newest visible)
 }
-
-
-
 
 
 
