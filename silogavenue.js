@@ -1,7 +1,7 @@
 let cart = [];
 let totalPrice = 0;
 let discountApplied = false;  // Flag to track if discount is applied
-let receiptCounter = parseInt(localStorage.getItem('receiptCounter')) || 1;
+
 
 // Retrieve daily sales from localStorage (or default to 0 if not found)
 let dailySales = parseFloat(localStorage.getItem('dailySales')) || 0;
@@ -338,6 +338,7 @@ function addNewItem(content) {
   cart.prepend(newItem); // Adds to top of the list
   cart.scrollTop = 0;    // Keeps the view at the top (newest visible)
 }
+
 
 
 
