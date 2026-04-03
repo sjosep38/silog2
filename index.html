@@ -31,11 +31,11 @@
         .product-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #f9f9f9; }
         .btn-action { border: none; color: white; padding: 5px 10px; border-radius: 3px; cursor: pointer; margin-left: 3px; }
         
-        .btn-complete { background: var(--accent); color: white; width: 100%; font-size: 1rem; cursor: pointer; padding: 10px; font-weight: bold; border: none; margin-top:10px; border-radius: 5px; transition: 0.2s; }
-        .btn-complete:hover { background: #219150; }
-        .btn-void { background: red; color: white; border:none; width: 100%; cursor:pointer; padding: 5px; margin-top: 5px;}
-
-        .total-display { font-family: 'Arial', sans-serif; font-size: 1.5rem; color: RED; font-weight: bold; margin: 10px 0; border-top: 2px solid #eee; padding-top: 10px; text-align: right;}
+        .btn-complete { background: var(--edit); color: white; width: 100%; font-size: 1rem; cursor: pointer; padding: 5px; font-weight: bold; border: none; margin-top:10px; border-radius: 5px; transition: 0.2s; }
+        .btn-complete:hover { background:yellow;}
+        .btn-void { background: linear-gradient(90deg,rgba(5, 173, 78, 1) 0%, rgba(0, 250, 54, 1) 100%); color: white; border:1px solid  #00ff6f; width: 100%; cursor:pointer; padding: 5px; margin-top: 5px;}
+		.btn-void:hover { background: #1f874c;}
+        .total-display { display: flex; justify-content: space-between;font-family: 'Arial', sans-serif; font-size: 1rem; color:red; font-weight: bold; margin: 10px 0; padding-top: 1px; text-align: right;}
         
         /* Modal General Styling */
         .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background:rgba(0,0,0,0.8); }
@@ -56,7 +56,38 @@
         .input-group label { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); background: white; padding: 0 5px; color: #999; pointer-events: none; transition: 0.3s ease all; }
         .input-group:hover label, .input-group input:focus + label, .input-group input:not(:placeholder-shown) + label { top: 0; font-size: 12px; color: #007bff; font-weight: bold; }
         .input-group input:focus { border-color: #007bff; }
-    </style>
+   /* Hidden by default */
+.modal-overlay {
+    display: none; 
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5); /* Dimmed background */
+    backdrop-filter: blur(4px); /* Modern frosted glass effect */
+}
+
+
+.modal-btn {
+    margin-top: 20px;
+    padding: 10px 30px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+
+@keyframes slideDown {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+   </style>
 </head>
 <body>
 
@@ -70,7 +101,7 @@
 
 <div class="app-container">
     <section class="column products-panel">
-        <h3 id="formTitle">Inventory Manager</h3>
+        <h3 id="formTitle" style="color:  var(--primary);">INVENTORY MANAGER</h3>
         <input type="hidden" id="pId">
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px;">
             <div class="input-group"><input type="text" id="pBarcode" maxlength="15" placeholder=" "><label>Barcode/SKU</label></div>
@@ -87,8 +118,8 @@
     </section>
 
     <section class="column cart-panel">
-        <h3>Cart Order</h3>
-        <input type="text" id="cartScanner" placeholder="Scan Barcode / Search..." style="width: 100%; background: #FFF0F0; font-weight: bold; border: 2px solid var(--accent); box-sizing: border-box;" onkeypress="if(event.key==='Enter') addToCart(this.value)">
+        <h3 style="color:var(--accent);">CART ITEMS</h3>
+        <input type="text" id="cartScanner" placeholder="Scan Barcode / Search..." style="width: 100%; background: #05ad4e; font-weight: bold; border: 2px solid var(--accent); box-sizing: border-box;" onkeypress="if(event.key==='Enter') addToCart(this.value)">
         <div style="display: flex; font-size: 11px; font-weight: bold; color: #777; padding: 10px 10px 0;">
             <span style="flex: 2;">ITEM</span>
             <span style="flex: 1; text-align: center;">PRICE</span>
@@ -103,27 +134,30 @@
         </div>
     </section>
     <section class="column checkout-panel">
-        <h3>Payment</h3>
-        <div class="total-display">TOTAL : ₱<span id="summaryTotal">0.00</span></div>
+        <h3 style="color:var(--edit);">CHECK OUT COUNTER</h3>
+        
         <div style="background:#E8E8E8; padding: 5px; border-radius: 5px; flex: 1;">
             <label>Payment Method:</label>
-            <select id="payMethod" style="width: 100%; margin-bottom: 15px;">
+            <select id="payMethod" style="width: 100%; margin-bottom: 5px;font-size:16px;">
                 <option value="Cash">Cash</option>
                 <option value="GCash">GCash</option>
                 <option value="Bank Transfer">Bank Transfer</option>
 				<option value="Debit Card">Debit Card</option>
 			</select>
-            <button id="discountBtn" onclick="askDiscountPassword()" style="background:#fff; border: 1px solid var(--accent); color: var(--accent); cursor: pointer; padding: 10px; font-weight: bold; width:100%">
+            <button id="discountBtn" onclick="askDiscountPassword()" style="background:#fff; border: 1px solid var(--edit); color:orange; cursor: pointer; padding: 10px; font-weight: bold; width:100%">
                 <i class="fas fa-percents"></i> APPLY 20% DISCOUNT
             </button>
             <hr>
             <label>Cash Received:</label>
             <input type="number" id="cashRendered" placeholder="0.00" style="width:100%; font-size: 1.1rem; padding:5PX; border: 2px solid var(--primary); box-sizing: border-box; text-align: right;" oninput="updateTotals()">
-            <div style="display: flex; justify-content: space-between; margin: 5px 0;"><span>Subtotal:</span><span>₱<span id="summarySubtotal">0.00</span></span></div>
-            <div style="display: flex; justify-content: space-between; margin: 5px 0; color: var(--danger);"><span>Discount:</span><span>-₱<span id="discountLabel">0.00</span></span></div>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 5px; font-size: 1rem;"><b>Change:</b><b id="changeDisplay" style="color:var(--accent)">0.00</b></div>
-        </div>
-        <button class="btn-complete" onclick="processTransaction()"><i class="fas fa-print"></i> FINISH & PRINT</button>
+            <div style="display: flex; justify-content: space-between; margin: 5px 0;"><span>Subtotal :</span><span>₱<span id="summarySubtotal">0.00</span></span></div>
+            <div style="display: flex; justify-content: space-between; margin: 5px 0; color:black;"><span>Discount :</span><span>₱<span id="discountLabel">0.00</span></span></div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 5px; font-size: 1rem;">Change :<b id="changeDisplay" style="color:black">₱0.00</b></div>
+			<hr>
+			<div class="total-display">TOTAL : <span id="summaryTotal">₱0.00</span></div>
+			
+		</div>
+        <button class="btn-complete" onclick="processTransaction();"><i class="fas fa-print"></i> FINISH & PRINT</button>
     </section>
 </div>
 
@@ -150,7 +184,7 @@
             <button onclick="exportToCSV()" style="background: var(--accent); color: white; border:none; padding: 10px; cursor:pointer; border-radius:4px;"><i class="fas fa-file-export"></i> EXPORT TO CSV</button>
         </div>
         <table width="100%" border="1" style="border-collapse: collapse; text-align:center;">
-            <thead><tr style="background:#2c3e50; color:white;"><th style="padding:10px;">Date/Time</th><th>Items</th><th>Total</th><th>Method</th></tr></thead>
+            <thead><tr style="background:#2c3e50; color:white;"><th style="padding:10px;">DATE & TIME</th><th>ITEMS</th><th>TOTAL</th><th>METHOD</th></tr></thead>
             <tbody id="salesBody" style="text-align:center;"></tbody>
         </table>
     </div>
@@ -161,12 +195,24 @@
         <button onclick="toggleModal('inventoryModal')" style="float:right; background:var(--danger); color:white; border:none; padding:5px 10px; cursor:pointer;">Close</button>
         <h2>Current Stock Status</h2>
         <table width="100%" border="1" style="border-collapse: collapse; margin-top:10px; align-items: center;">
-            <thead><tr style="background:#eee;" ><th>Barcode</th><th>Item</th><th>Price</th><th>In Stock</th><th>Sold</th></tr></thead>
+            <thead><tr style="background:#eee;" ><th>BARCODE</th><th>ITEMS</th><th>PRICE</th><th>STOCK</th><th>SOLD</th></tr></thead>
             <tbody id="invBody"  style="text-align:center;"></tbody>
         </table>
     </div>
 </div>
-
+<div id="changeModal" class="modal-overlay">
+    <div class="modal-content">
+        <span class="modal-close" onclick="closeModal()">&times;</span>
+        <div class="modal-header">Transaction Complete</div>
+        <div class="modal-body">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 5px; font-size: 2rem;">
+                <span>Change:</span>
+                <b id="changeDisplay" style="color:#2ecc71">₱0.00</b>
+            </div>
+        </div>
+        <button class="modal-btn" onclick="closeModal()">OK</button>
+    </div>
+</div>
 <script>
 let db;
 let cart = [];
@@ -546,6 +592,20 @@ function openFullscreen() {
   }
 }
 
+function showChange(amount) {
+    // Update the value
+    document.getElementById("changeDisplay").innerText = "₱" + amount.toFixed(2);
+    
+    // Show the modal
+    document.getElementById("changeModal").style.display = "block";
+}
+
+function closeModal() {
+    document.getElementById("changeModal").style.display = "none";
+}
+
+// Example usage: 
+// showChange(150.50);
 </script>
 </body>
 </html>
