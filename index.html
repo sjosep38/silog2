@@ -285,7 +285,7 @@ function addToCart(bc) {
             if(cursor.value.barcode === bc) {
                 found = true;
                 const p = cursor.value;
-                if(p.stock <= 0) return showAlert("Error: Item is out of stock!", "error");
+                if(p.stock <= 0) return showAlert(" Item is out of stock!", "error");
                 
                 const itemInCart = cart.find(i => i.barcode === bc);
                 if(itemInCart) {
@@ -429,18 +429,18 @@ function printReceipt(s) {
         <hr>
         <div style="margin-bottom:1px;">${new Date(s.timestamp).toLocaleString()}</div>
 		<div style="margin-top: 5px;">Method:${s.method} <span style="float:right"></span></div><hr>
-        ${s.items.map(i => `<div>${i.name}<br><small>${i.qty} x ${i.price.toFixed(2)}</small><span style="float:right">₱${(i.qty*i.price).toFixed(2)}</span></div>`).join('')}
+        ${s.items.map(i => `<div>${i.name}<br><small>&nbsp ${i.qty} x ${i.price.toFixed(2)}</small><span style="float:right">₱${(i.qty*i.price).toFixed(2)}</span></div>`).join('')}
 		
 		<hr>
         <div>Subtotal: <span style="float:right">₱${s.subtotal.toFixed(2)}</span></div>
 		
         ${s.discount > 0 ? `<div>Discount: <span style="float:right">-₱${s.discount.toFixed(2)}</span></div>` : ''}
-       <div style="margin-top: 5px;">Payment:<span style="float:right">₱${s.cash.toFixed(2)}</span></div>
+       <div style="margin-top: 0px;">Payment:<span style="float:right">₱${s.cash.toFixed(2)}</span></div>
         <div>Change: <span style="float:right">₱${s.change.toFixed(2)}</span></div>
-        <div style="font-size: 1.2em;"><strong>TOTAL: <span style="float:right">₱${s.total.toFixed(2)}</span></strong></div>
+        <div style="font-size: 1em;"><strong>TOTAL: <span style="float:right">₱${s.total.toFixed(2)}</span></strong></div>
 		 
         <hr><div style="text-align:center; font-size: 0.8em; margin-top: 1px;">Thanks for your purchased.</div>
-		<div style="text-align:center; font-size: 0.8em; margin-top: 1px;">Please come again!!</div>
+		<div style="text-align:center; font-size: 0.9em; margin-top: 1px;">Please come again!!</div>
     `;
     window.print();
 }
