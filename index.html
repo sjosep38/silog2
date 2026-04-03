@@ -149,9 +149,9 @@
             </select>
             <button onclick="exportToCSV()" style="background: var(--accent); color: white; border:none; padding: 10px; cursor:pointer; border-radius:4px;"><i class="fas fa-file-export"></i> EXPORT TO CSV</button>
         </div>
-        <table width="100%" border="1" style="border-collapse: collapse; text-align: left;">
+        <table width="100%" border="1" style="border-collapse: collapse; text-align:center;">
             <thead><tr style="background:#2c3e50; color:white;"><th style="padding:10px;">Date/Time</th><th>Items</th><th>Total</th><th>Method</th></tr></thead>
-            <tbody id="salesBody"></tbody>
+            <tbody id="salesBody" style="text-align:center;"></tbody>
         </table>
     </div>
 </div>
@@ -160,9 +160,9 @@
     <div class="modal-content">
         <button onclick="toggleModal('inventoryModal')" style="float:right; background:var(--danger); color:white; border:none; padding:5px 10px; cursor:pointer;">Close</button>
         <h2>Current Stock Status</h2>
-        <table width="100%" border="1" style="border-collapse: collapse; margin-top:10px;">
-            <thead><tr style="background:#eee"><th>Barcode</th><th>Item</th><th>Price</th><th>In Stock</th><th>Sold</th></tr></thead>
-            <tbody id="invBody"></tbody>
+        <table width="100%" border="1" style="border-collapse: collapse; margin-top:10px; align-items: center;">
+            <thead><tr style="background:#eee;" ><th>Barcode</th><th>Item</th><th>Price</th><th>In Stock</th><th>Sold</th></tr></thead>
+            <tbody id="invBody"  style="text-align:center;"></tbody>
         </table>
     </div>
 </div>
