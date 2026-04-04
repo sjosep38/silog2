@@ -699,7 +699,7 @@ function loadSalesHistory() {
 // Function to trigger the API call
 async function handleTelegramSend() {
     if (currentFilteredSales.length === 0) {
-        alert("The data is still uploading. Please try again in a moment!");
+        showAlert("The data is still uploading. Please try again in a moment!", "info");
         // FIX: Added .style to properly manipulate DOM CSS
         salesModal.style.display = "none"; 
         return;
