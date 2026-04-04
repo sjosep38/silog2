@@ -688,8 +688,7 @@ async function handleTelegramSend() {
         const data = await response.json(); // Parse the response for better debugging
 
         if (response.ok) {
-            alert("The data has been successfully uploaded!");
-            salesModal.style.display = "none"; // Hide the modal on success too
+
         } else {
             console.error("Telegram API Error:", data);
             alert(`Error sending to Telegram: ${data.description || 'Unknown error'}`);
