@@ -1,3 +1,4 @@
+<!--"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --kiosk --noerrdialogs --disable-session-crashed-bubble https://silog2.pages.dev/-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,7 +22,7 @@
         .app-container { display: flex; flex: 1; gap: 5px; padding: 10px; box-sizing: border-box; overflow: hidden; }
         .column { background: white; padding: 15px; display: flex; flex-direction: column; box-shadow: 0 2px 5px rgba(0,0,0,0.5); height: 100%; box-sizing: border-box; }
         
-        .products-panel { flex: 1; border-top: 8px solid var(--primary); border-bottom: 8px solid var(--primary); border-left: 1px solid var(--primary); border-right: 1px solid var(--primary); }
+        .products-panel { flex:1; border-top: 8px solid var(--primary); border-bottom: 8px solid var(--primary); border-left: 1px solid var(--primary); border-right: 1px solid var(--primary); }
         .cart-panel { flex: 1; border-top: 8px solid var(--accent);  border-bottom: 8px solid var(--accent); border-left: 1px solid var(--accent); border-right: 1px solid var(--accent); }
         .checkout-panel { flex: .5; border-top: 8px solid var(--edit); border-bottom: 8px solid var(--edit); border-left: 1px solid var(--edit); border-right: 1px solid var(--edit); }
 
@@ -86,6 +87,83 @@
     from { transform: translateY(-50px); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }
 }
+#tg-chat-wrapper {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    font-family: Arial, sans-serif;
+}
+
+#tg-float-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #242f3d; /* Dark Telegram Blue */
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+}
+
+#tg-float-btn:hover { transform: scale(1.1); }
+
+#tg-chat-box {
+    width: 280px;
+    background: #17212b; /* Darker background */
+    border-radius: 10px;
+    margin-bottom: 15px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.tg-hidden {
+    display: none;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.tg-header {
+    background: #242f3d;
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+}
+
+.tg-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.tg-body {
+    padding: 20px;
+    color: #efefef;
+    text-align: center;
+}
+
+.tg-send-btn {
+    display: block;
+    margin-top: 15px;
+    padding: 10px;
+    background: #50a8eb;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: background 0.3s;
+}
+
+.tg-send-btn:hover { background: #4092d1; }
 
    </style>
 </head>
@@ -212,6 +290,24 @@
         </div>
         <button class="modal-btn" onclick="closeModal()">OK</button>
     </div>
+</div>
+<div id="tg-chat-wrapper">
+    <div id="tg-chat-box" class="tg-hidden">
+        <div class="tg-header">
+            <span>Customer Support</span>
+            <button onclick="toggleTGChat()" class="tg-close">&times;</button>
+        </div>
+        <div class="tg-body">
+            <p>How can we help you today?</p>
+            <a href="https://t.me/Masterkurtfoodhub" target="_blank" class="tg-send-btn">
+                Start Chat on Telegram
+            </a>
+        </div>
+    </div>
+    
+    <button id="tg-float-btn" onclick="toggleTGChat()">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram" width="30">
+    </button>
 </div>
 <script>
 let db;
@@ -488,7 +584,13 @@ function printReceipt(s) {
         <hr><div style="text-align:center; font-size: 0.8em; margin-top: 1px;">Thanks for your purchased.</div>
 		<div style="text-align:center; font-size: 0.9em; margin-top: 1px;">Please come again!!</div>
     `;
+	// 1. Generate the formatted string
+const receiptString = sendTelegramReceipt(s); 
+
+// 2. Send it!
+sendToTelegram(receiptString);
     window.print();
+
 }
 
 function toggleModal(id) {
@@ -606,6 +708,84 @@ function closeModal() {
 
 // Example usage: 
 // showChange(150.50);
+function sendTelegramReceipt(s) {
+    const divider = "------------------------------------------";
+    
+    // Header
+    let message = `<b>SEANSO VLOG RETAIL</b>\n`;
+    message += `<pre>Branch #001 - Metro Manila\n`;
+    message += `Mobile: 0950 682 5698</pre>\n`;
+    message += `${divider}\n`;
+    
+    // Metadata
+    message += `Date: ${new Date(s.timestamp).toLocaleString()}\n`;
+    message += `Method: ${s.method}\n`;
+    message += `${divider}\n`;
+    
+    // Items List
+    s.items.forEach(i => {
+        const itemTotal = (i.qty * i.price).toFixed(2);
+        message += `<b>${i.name}</b>\n`;
+        message += `<i>${i.qty} x ${i.price.toFixed(2)}</i>  →  ₱${itemTotal}\n`;
+    });
+    
+    message += `${divider}\n`;
+    
+    // Financials
+    message += `Subtotal: ₱${s.subtotal.toFixed(2)}\n`;
+    if (s.discount > 0) {
+        message += `Discount: -₱${s.discount.toFixed(2)}\n`;
+    }
+    message += `<b>TOTAL: ₱${s.total.toFixed(2)}</b>\n`;
+   
+    message += `Payment: ₱${s.cash.toFixed(2)}\n`;
+    message += `Change: ₱${s.change.toFixed(2)}\n`;
+    
+    // Footer
+    message += `\n<i>Thanks for your purchase!</i>\n`;
+    message += `<b>Please come again!!</b>`;
+
+    return message; 
+
+}
+async function sendToTelegram(receiptHtml) {
+    const BOT_TOKEN = '8329561822:AAFPc5wqF3n4YX_-KQM3_iVpdn_XOciyl_0';
+    const CHAT_ID = '6975478760';
+    const URL = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+
+    const payload = {
+        chat_id: CHAT_ID,
+        text: receiptHtml,
+        parse_mode: 'HTML' // This tells Telegram to render your <b> and <i> tags
+    };
+
+    try {
+        const response = await fetch(URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+        if (data.ok) {
+            console.log("Receipt sent to Telegram successfully!");
+        } else {
+            console.error("Telegram Error:", data.description);
+        }
+    } catch (error) {
+        console.error("Connection Error:", error);
+    }
+}
+function toggleTGChat() {
+    const chatBox = document.getElementById('tg-chat-box');
+    if (chatBox.classList.contains('tg-hidden')) {
+        chatBox.classList.remove('tg-hidden');
+    } else {
+        chatBox.classList.add('tg-hidden');
+    }
+}
 </script>
 </body>
 </html>
