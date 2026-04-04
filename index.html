@@ -446,7 +446,7 @@ function renderProducts() {
         if(cursor) {
             const v = cursor.value;
             if(v.name.toLowerCase().includes(search) || v.barcode.includes(search)) {
-                const stockColor = v.stock <= 5 ? 'color:red; font-weight:bold' : '';
+                const stockColor = v.stock <= 10 ? 'color:red; font-weight:bold' : '';
                 list.innerHTML += `
                 <div class="product-item">
                     <div onclick="addToCart('${v.barcode}')" style="cursor:pointer; flex:1">
