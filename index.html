@@ -174,7 +174,7 @@
     <span><i class="fas fa-cash-register"></i> SEANSO VLOG POS <small style="font-weight: normal; opacity: 0.8; font-size: 0.7em;">v2.0</small></span>
     <div>
         <button class="nav-btn" onclick="toggleModal('inventoryModal')"><i class="fas fa-boxes"></i> Stocks</button>
-        <button class="nav-btn" onclick="toggleModal('salesModal')"><i class="fas fa-file-invoice-dollar"></i> Reports</button>
+        <button id="sendTelegramBtn" class="nav-btn" onclick="toggleModal('salesModal')" style="padding: 8px; cursor: pointer;"><i class="fas fa-file-invoice-dollar"></i> Sales Report</button>
     </div>
 </h3>
 
@@ -279,6 +279,7 @@
         </table>
     </div>
 </div>
+
 <div id="changeModal" class="modal-overlay">
     <div class="modal-content">
         <span class="modal-close" onclick="closeModal()">&times;</span>
@@ -617,7 +618,92 @@ function loadSalesHistory() {
         tbody.innerHTML = filtered.map(s => `<tr><td style="padding:8px;">${new Date(s.timestamp).toLocaleString()}</td><td>${s.items.length} items</td><td>₱${s.total.toFixed(2)}</td><td>${s.method}</td></tr>`).join('');
     };
 }
+// Variable to store current view for the button to use
+let currentFilteredSales = [];
 
+function loadSalesHistory() {
+    const filter = document.getElementById('salesFilter').value;
+    const tbody = document.getElementById('salesBody');
+    const startOfDay = new Date(new Date().setHours(0,0,0,0)).getTime();
+    
+    db.transaction("sales").objectStore("sales").getAll().onsuccess = e => {
+        // Save to global variable
+        currentFilteredSales = e.target.result
+            .filter(s => filter === 'daily' ? s.timestamp >= startOfDay : true)
+            .sort((a, b) => b.timestamp - a.timestamp);
+
+        // Update Table
+        tbody.innerHTML = currentFilteredSales.map(s => `
+            <tr>
+                <td>${new Date(s.timestamp).toLocaleString()}</td>
+                <td>${s.items.length} items</td>
+                <td>₱${s.total.toFixed(2)}</td>
+                <td>${s.method}</td>
+            </tr>`).join('');
+    };
+}
+
+// Function to trigger the API call
+async function handleTelegramSend() {
+    if (currentFilteredSales.length === 0) {
+        alert("The data is still uploading. Please try again in a moment!");
+        // FIX: Added .style to properly manipulate DOM CSS
+        salesModal.style.display = "none"; 
+        return;
+    }
+
+    // ⚠️ CRITICAL: Revoke your old token and paste the new one here!
+    const BOT_TOKEN = '8329561822:AAFPc5wqF3n4YX_-KQM3_iVpdn_XOciyl_0'; 
+    const CHAT_ID = '6975478760';
+    
+    // Formatting the message for Telegram
+    let message = "<b>📊 Sales Report Export</b>\n\n";
+    let grandTotal = 0;
+
+    currentFilteredSales.forEach((s, index) => {
+        const time = new Date(s.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        message += `${index + 1}. [${time}] <b>₱${s.total.toFixed(2)}</b> (${s.method})\n`;
+        grandTotal += s.total;
+    });
+
+    message += `\nTotal Sales: <b>₱${grandTotal.toFixed(2)}</b>`;
+
+    // EDGE CASE FIX: Telegram has a message limit of 4096 characters.
+    if (message.length > 4000) {
+        alert("The sales list is too long to send in a single Telegram message! Try filtering for a shorter timeframe.");
+        return;
+    }
+
+    try {
+        const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                chat_id: CHAT_ID,
+                text: message,
+                parse_mode: 'HTML'
+            })
+        });
+
+        const data = await response.json(); // Parse the response for better debugging
+
+        if (response.ok) {
+            alert("The data has been successfully uploaded!");
+            salesModal.style.display = "none"; // Hide the modal on success too
+        } else {
+            console.error("Telegram API Error:", data);
+            alert(`Error sending to Telegram: ${data.description || 'Unknown error'}`);
+        }
+    } catch (error) {
+        console.error("Network/CORS Error:", error);
+        alert("Connection failed. Check your internet or CORS restrictions.");
+    }
+}
+
+// Attach event listener to the button
+document.getElementById('sendTelegramBtn').addEventListener('click', handleTelegramSend);
+
+//exportToCSV
 function exportToCSV() {
     // Check if DB is actually ready
     if (!db) {
