@@ -203,7 +203,7 @@ margin-bottom:1px;
     </h2>
 </div>
     <p><center>Please enter the administrator password:</center></p>
-    <input type="password" id="password-input" placeholder="" value="admin" autofocus>
+    <input type="password" id="password-input" placeholder="" value="" autofocus>
     <div id="login-error" class="error-msg" style="display: none;">Incorrect Password</div>
     <button id="login-btn">Unlock System</button>
   </div>
@@ -367,7 +367,7 @@ margin-bottom:1px;
 let db;
 let cart = [];
 let discountApplied = false;
-const DISCOUNT_PASS = "1234";
+const DISCOUNT_PASS = "sv";
 
 // Prevent accidental exit
 window.addEventListener('beforeunload', (e) => { e.preventDefault(); e.returnValue = ''; });
@@ -592,7 +592,7 @@ function askDiscountPassword() {
             pModal.style.display = "none";
             showAlert("Access Granted. Discount Applied!", "success");
         } else {
-            showAlert("Incorrect Password. Please Try Again", "error");
+          
             pInput.value = "";
             pInput.focus();
         }
@@ -962,7 +962,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const errorMsg = document.getElementById('login-error');
 
     // Set your desired password here
-   const MASTER_PASSWORD = "admin"; // Change this to your choice
+   const MASTER_PASSWORD = "sv"; // Change this to your choice
 
 document.getElementById('login-btn').onclick = function() {
     const entered = document.getElementById('password-input').value;
