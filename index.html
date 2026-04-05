@@ -233,6 +233,30 @@
 .modal-content::-webkit-scrollbar-track {
   background: transparent;
 }
+
+/* Base styles for Mobile (default) */
+.app-container {
+  width: 90%;
+  margin: 0 auto;
+}
+
+
+/* Tablet Styles */
+@media (min-width: 768px) {
+  .app-container {
+    width: 100%;
+  }
+  .content-box {
+    flex-direction: row; /* Side-by-side elements on tablets */
+  }
+}
+
+/* PC/Desktop Styles */
+@media (min-width: 1360px) {
+  .app-container {
+    max-width: 1360px; /* Prevent it from getting too wide on huge monitors */
+  }
+}
    </style>
 </head>
 <body>
@@ -250,7 +274,7 @@
     </h2>
 </div>
     <p><center>Please enter the administrator password:</center></p>
-    <input type="password" id="password-input" value="sv" autofocus>
+    <input type="password" id="password-input" value="" autofocus>
     <div id="login-error" class="error-msg" style="display: none;">Incorrect Password</div>
     <button id="login-btn">Unlock System</button>
   </div>
