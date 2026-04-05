@@ -162,7 +162,7 @@
     border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    color: green;
+    color:#4c5c4c;
     font-family: 'Segoe UI', sans-serif;
 }
 
@@ -211,8 +211,8 @@
 }
 /* Modal Container Styling */
 .modal-content {
-  background: #444;
-  margin: 2% auto;
+background: linear-gradient(90deg,rgba(248, 255, 196, 0.75) 0%, rgba(232, 232, 255, 0.76) 100%);
+ margin: 2% auto;
   padding: 10px;
   width: 90%;
   max-width: 850px;
@@ -227,7 +227,9 @@
 
 .modal-content::-webkit-scrollbar-thumb {
   background: gray;
-  border-radius: 10px;
+  background: orange;
+ 
+  border-radius: 1px 10px 10px 1px;
 }
 
 .modal-content::-webkit-scrollbar-track {
@@ -312,10 +314,11 @@
         <h3 style="color:var(--accent);">CART ITEMS</h3>
         <input type="text" id="cartScanner" placeholder="Scan Barcode / Search..." style="width: 100%; background: #05ad4e; font-weight: bold; border: 2px solid var(--accent); box-sizing: border-box;" onkeypress="if(event.key==='Enter') addToCart(this.value)">
         <div style="display: flex; font-size: 11px; font-weight: bold; color: #777; padding: 10px 10px 0;">
-            <span style="flex: 2;">ITEM</span>
-            <span style="flex: 1; text-align: center;">PRICE</span>
-            <span style="flex: 1; text-align: center;">QTY</span>
+            <span style="flex: 2.8; text-align:left;">ITEM</span>
+            <span style="flex: 1; text-align: right;">PRICE</span>
+            <span style="flex: 1; text-align: right;">QTY</span>
             <span style="flex: 1; text-align: right;">TOTAL</span>
+			<span style="flex: 1; text-align: right;">ACTION</span>
             <span style="width: 30px;"></span>
         </div>
         <div id="cartItems" class="scroll-list"></div>
@@ -367,6 +370,7 @@
         <div style="margin-bottom: 15px; display: flex; gap: 10px; align-items: center;">
             <label>Filter View:</label>
 			<select id="salesFilter" onchange="loadSalesHistory();" style="width:300px;">
+				<option value="all">All Time (Since System Launch)</option>
 				<option value="daily">Daily (Today)</option>
 				<option value="weekly">Weekly (Last 7 Days)</option>
 				<option value="monthly">Monthly (Past 30 Days)</option>
@@ -587,18 +591,38 @@ function addToCart(bc) {
 
 function renderCart() {
     const cont = document.getElementById('cartItems');
+    // Map through the cart and generate HTML
     cont.innerHTML = cart.map((item, idx) => `
-        <div class="product-item">
-            <span style="flex:2"><b>${item.name}</b></span>
-            <span style="flex:1; text-align:center">₱${item.price}</span>
-            <input type="number" value="${item.qty}" style="width:45px" onchange="updateCartQty(${idx}, this.value)">
-            <span style="flex:1; text-align:right">₱${(item.price * item.qty).toFixed(2)}</span>
-            <button onclick="cart.splice(${idx},1); renderCart()" style="background:none; border:none; color:red; cursor:pointer; font-size:1.2rem">×</button>
+        <div class="product-item" style="display: flex; align-items: center; padding: 5px 10px; border-bottom: 1px solid #eee;">
+            <span style="flex: 3.2; text-align: left;"><b>${item.name}</b></span>
+            <span style="flex: 1; text-align: right;">₱${item.price.toLocaleString()}</span>
+            
+            <input type="number" 
+                   value="${item.qty}" 
+                   style="width: 10px; flex: 1; text-align: right; margin-left: 10px;" 
+                   onchange="updateCartQty(${idx}, this.value)">
+            
+            <span style="flex: 1; text-align: right;">₱${(item.price * item.qty).toFixed(2)}</span>
+            
+            <button onclick="cart.splice(${idx}, 1); renderCart()" 
+                    style="flex: 1; text-align: center; background: none; border:none; color: red;margin-left: 5px; cursor: pointer; font-size: 0.8rem;">
+                X
+            </button>
         </div>
     `).join('');
+    
     updateTotals();
 }
-
+//function updateCartQty(index, newQty) {
+  //  const qty = parseInt(newQty);
+ //   if (qty > 0) {
+ //       cart[index].qty = qty;
+ //   } else {
+        // If qty is 0 or less, maybe remove it? 
+//cart.splice(index, 1);
+ //   }
+ //   renderCart(); // Refresh the UI
+//}
 function updateCartQty(idx, qty) {
     qty = parseInt(qty);
     if(qty > 0) {
@@ -846,7 +870,7 @@ currentFilteredSales.forEach((s, index) => {
 
     // Append to message string
     //message += `${index + 1}. [${dateStr}], [${timeStr}] <b>₱${s.total.toFixed(2)}</b> (${s.method})\n`;
-    message += `${index + 1}. [${dateStr},${timeStr}] <b>₱${s.total.toFixed(2)}</b> (${s.method})\n`;
+    message += `${index + 1}. [${dateStr},${timeStr}]\n`;
     
 	
     // Increment grand total
@@ -857,7 +881,7 @@ currentFilteredSales.forEach((s, index) => {
 message += `\n<b>Grand Total: ₱${grandTotal.toFixed(2)}</b>`;
 
     // EDGE CASE FIX: Telegram has a message limit of 4096 characters.
-    if (message.length > 4000) {
+    if (message.length > 4096) {
         alert("The sales list is too long to send in a single Telegram message! Try filtering for a shorter timeframe.");
         return;
     }
