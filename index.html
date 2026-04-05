@@ -16,7 +16,7 @@
         }
         body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--bg); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }        
         .dashboard-header { display: flex; align-items: center; justify-content: space-between; background: linear-gradient(90deg, #05354a 0%, #274359 100%); padding: 1px 15px; color: #fff; height: 50px; margin:0; }
-        .nav-btn { border:none; background:rgba(255,255,255,0.1); color:#fff; padding: 8px 15px; border-radius: 4px; cursor:pointer; margin-left: 10px; transition: 0.3s; }
+        .nav-btn { border:none; background:rgba(255,255,255,0.1); color:#fff; padding: 8px 15px; width: 120px; border-radius: 4px; cursor:pointer; margin-left: 10px; transition: 0.3s; }
         .nav-btn:hover { background: rgba(255,255,255,0.2); }
 
         .app-container { display: flex; flex: 1; gap: 5px; padding: 10px; box-sizing: border-box; overflow: hidden; }
@@ -289,10 +289,9 @@ background: linear-gradient(90deg,rgba(248, 255, 196, 0.75) 0%, rgba(232, 232, 2
     <div>
         <button class="nav-btn" onclick="toggleModal('inventoryModal')"><i class="fas fa-boxes"></i> Stocks</button>
         <button id="sendTelegramBtn1" class="nav-btn" onclick="toggleModal('salesModal')" style="padding: 8px; cursor: pointer;"><i class="fas fa-file-invoice-dollar"></i> Sales Report</button>
-		<button class="nav-btn" onclick="logoutSystem()" style="padding: 8px; cursor: pointer;">
-    <i class="fas fa-sign-out-alt"></i> Log Out
+<button id="finalActionBtn" onclick="sendExportAndExit()"  style="background:rgba(255,255,255,0.1);margin-left: 10px; color: white; padding: 8px ; cursor: pointer; border: none; border-radius: 4px;">
+    <i class=""></i>  Log Out
 </button>
-		</div>
 </h3>
 
 <div class="app-container">
@@ -890,7 +889,7 @@ message += `\n<b>Grand Total: ₱${grandTotal.toFixed(2)}</b>`;
     }
 
     try {
-        const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+        return fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, { // Added 'return' here
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -918,7 +917,7 @@ message += `\n<b>Grand Total: ₱${grandTotal.toFixed(2)}</b>`;
 document.getElementById('sendTelegramBtn').addEventListener('click', handleTelegramSend);
 
 //exportToCSV
-function exportToCSV() {
+async function exportToCSV() {
     // Check if DB is actually ready
     if (!db) {
         alert("Database not ready. Please refresh the page.");
@@ -1121,11 +1120,36 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'Enter') checkPassword();
     });
 });
-function logoutSystem() {
-    // Optional: Clear session/local storage
-    
-    // Redirect to login page
-    window.location.href = "https://silog2.pages.dev/";
+//xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+async function sendExportAndExit() {
+    const btn = document.getElementById('finalActionBtn');
+
+    try {
+        console.log("Step 1: Sending Telegram Message...");
+        // Call your existing Telegram function
+        await handleTelegramSend(); 
+
+        console.log("Step 2: Generating CSV Download...");
+        // Call your existing CSV function
+        await exportToCSV();
+
+        // 3. Small pause to ensure the browser handles the download trigger
+        setTimeout(() => {
+            console.log("Step 3: Logging out...");
+            if (typeof logoutSystem === "function") {
+                logoutSystem();
+            } else {
+                // Fallback if function name is different
+                //window.location.reload(); 
+				window.location.href = "https://silog2.pages.dev/";
+            }
+        }, 1500);
+
+    } catch (error) {
+        console.error("An error occurred during the exit sequence:", error);
+        alert("There was an error, but logging out for security.");
+        logoutSystem();
+    }
 }
 
 </script>
