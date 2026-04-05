@@ -288,8 +288,11 @@ background: linear-gradient(90deg,rgba(248, 255, 196, 0.75) 0%, rgba(232, 232, 2
     <span><i class="fas fa-cash-register"></i> SEANSO VLOG POS <small style="font-weight: normal; opacity: 0.8; font-size: 0.7em;">v2.0</small></span>
     <div>
         <button class="nav-btn" onclick="toggleModal('inventoryModal')"><i class="fas fa-boxes"></i> Stocks</button>
-        <button id="sendTelegramBtn1" class="nav-btn" onclick="toggleModal('salesModal')" style="padding: 8px; cursor: pointer;"><i class="fas fa-file-invoice-dollar"></i> Sales Report</button>
-    </div>
+        <button id="sendTelegramBtn" class="nav-btn" onclick="toggleModal('salesModal')" style="padding: 8px; cursor: pointer;"><i class="fas fa-file-invoice-dollar"></i> Sales Report</button>
+		<button id="sendTelegramBtn" class="nav-btn" onclick="logoutSystem()" style="padding: 8px; cursor: pointer;">
+    <i class="fas fa-sign-out-alt"></i> Log Out
+</button>
+		</div>
 </h3>
 
 <div class="app-container">
@@ -1118,6 +1121,18 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'Enter') checkPassword();
     });
 });
+function logoutSystem() {
+    // Optional: Clear session/local storage
+    
+    // Redirect to login page
+    window.location.href = "https://silog2.pages.dev/";
+}
+function logoutSystem() {
+    if (confirm("Are you sure you want to log out and close the system?")) {
+	window.location.href = "https://silog2.pages.dev/";
+        window.close();
+    }
+}
 </script>
 </body>
 </html>
