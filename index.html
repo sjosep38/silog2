@@ -40,7 +40,7 @@
         
         /* Modal General Styling */
         .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background:rgba(0,0,0,0.8); }
-        .modal-content { background: white; margin: 2% auto; padding: 10px; width: 90%; max-width: 850px; max-height: 85vh; overflow-y: auto;}
+        .modal-content { background: white; margin: 2% auto; padding: 10px; width: 90%; max-width: 850px; max-height: 85vh;  overflow-y: auto;}
 
         /* Custom Alert Specific Styling */
         #alert-box { max-width: 350px; text-align: center; border-top: 10px solid var(--primary); }
@@ -159,7 +159,7 @@
 .modal-content {
     background: rgba(40, 40, 40, 0.9);
     padding: 30px;
-    border-radius: 15px;
+    border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     color: green;
@@ -209,6 +209,30 @@
     25% { transform: translateX(-5px); }
     75% { transform: translateX(5px); }
 }
+/* Modal Container Styling */
+.modal-content {
+  background: #444;
+  margin: 2% auto;
+  padding: 10px;
+  width: 90%;
+  max-width: 850px;
+  max-height: 85vh;
+  overflow-y: auto; /* Enables the scrollbar */
+}
+
+/* Custom Scrollbar Styling for the Modal */
+.modal-content::-webkit-scrollbar {
+  width: 12px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+  background: gray;
+  border-radius: 10px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+  background: transparent;
+}
    </style>
 </head>
 <body>
@@ -226,7 +250,7 @@
     </h2>
 </div>
     <p><center>Please enter the administrator password:</center></p>
-    <input type="password" id="password-input" value="svdssdffsdsdf" autofocus>
+    <input type="password" id="password-input" value="sv" autofocus>
     <div id="login-error" class="error-msg" style="display: none;">Incorrect Password</div>
     <button id="login-btn">Unlock System</button>
   </div>
@@ -238,7 +262,7 @@
     <span><i class="fas fa-cash-register"></i> SEANSO VLOG POS <small style="font-weight: normal; opacity: 0.8; font-size: 0.7em;">v2.0</small></span>
     <div>
         <button class="nav-btn" onclick="toggleModal('inventoryModal')"><i class="fas fa-boxes"></i> Stocks</button>
-        <button id="sendTelegramBtn" class="nav-btn" onclick="toggleModal('salesModal')" style="padding: 8px; cursor: pointer;"><i class="fas fa-file-invoice-dollar"></i> Sales Report</button>
+        <button id="sendTelegramBtn1" class="nav-btn" onclick="toggleModal('salesModal')" style="padding: 8px; cursor: pointer;"><i class="fas fa-file-invoice-dollar"></i> Sales Report</button>
     </div>
 </h3>
 
@@ -318,21 +342,26 @@
         <h2>Sales History</h2>
         <div style="margin-bottom: 15px; display: flex; gap: 10px; align-items: center;">
             <label>Filter View:</label>
-<select id="salesFilter" onchange="loadSalesHistory()">
-    <option value="all">All Time</option>
-    <option value="daily">Daily</option>
-    <option value="weekly">Weekly</option>
-    <option value="monthly">Monthly</option>
-    <option value="yearly">Yearly</option>
-</select>
-            <button onclick="exportToCSV()" style="background: var(--accent); color: white; border:none; padding: 10px; cursor:pointer; border-radius:4px;"><i class="fas fa-file-export"></i> EXPORT TO CSV</button>
-        </div>
+			<select id="salesFilter" onchange="loadSalesHistory();" style="width:300px;">
+				<option value="daily">Daily (Today)</option>
+				<option value="weekly">Weekly (Last 7 Days)</option>
+				<option value="monthly">Monthly (Past 30 Days)</option>
+				<option value="yearly">Yearly (Past 365 Days)</option>
+				<option value="all">All Time (Since System Launch)</option>
+			</select>
+         <div style="display: inline-flex; border-radius: 4px; overflow: hidden; ">
+    <button id="sendTelegramBtn" onclick="exportToCSV()" style="background: var(--accent); color: white;padding: 10px 15px; cursor: pointer;">
+        <i class="fas fa-file-export"></i> Export Data Report CSV
+    </button>
+</div>
+	   </div>
         <table width="100%" border="1" style="border-collapse: collapse; text-align:center;">
             <thead><tr style="background:#2c3e50; color:white;"><th style="padding:10px;">DATE & TIME</th><th>ITEMS</th><th>TOTAL</th><th>METHOD</th></tr></thead>
             <tbody id="salesBody" style="text-align:center;"></tbody>
         </table>
     </div>
 </div>
+
 
 <div id="inventoryModal" class="modal">
     <div class="modal-content">
@@ -764,6 +793,7 @@ function loadSalesHistory() {
 // Variable to store current view for the button to use
 let currentFilteredSales = [];
 
+
 // Function to trigger the API call
 async function handleTelegramSend() {
     if (currentFilteredSales.length === 0) {
@@ -781,13 +811,26 @@ async function handleTelegramSend() {
     let message = "<b>📊 Sales Report Export</b>\n\n";
     let grandTotal = 0;
 
-    currentFilteredSales.forEach((s, index) => {
-        const time = new Date(s.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        message += `${index + 1}. [${time}] <b>₱${s.total.toFixed(2)}</b> (${s.method})\n`;
-        grandTotal += s.total;
-    });
+currentFilteredSales.forEach((s, index) => {
+    const saleDate = new Date(s.timestamp);
+    
+    // Format the date (e.g., "Oct 24, 2023")
+    const dateStr = saleDate.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' });
+    
+    // Format the time (e.g., "02:30 PM")
+    const timeStr = saleDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-    message += `\nTotal Sales: <b>₱${grandTotal.toFixed(2)}</b>`;
+    // Append to message string
+    //message += `${index + 1}. [${dateStr}], [${timeStr}] <b>₱${s.total.toFixed(2)}</b> (${s.method})\n`;
+    message += `${index + 1}. [${dateStr},${timeStr}] <b>₱${s.total.toFixed(2)}</b> (${s.method})\n`;
+    
+	
+    // Increment grand total
+    grandTotal += s.total;
+});
+
+// Optional: Append the grand total at the end
+message += `\n<b>Grand Total: ₱${grandTotal.toFixed(2)}</b>`;
 
     // EDGE CASE FIX: Telegram has a message limit of 4096 characters.
     if (message.length > 4000) {
