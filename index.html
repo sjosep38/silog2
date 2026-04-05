@@ -34,7 +34,7 @@
         
         .btn-complete { background: var(--edit); color: white; width: 100%; font-size: 1rem; cursor: pointer; padding: 5px; font-weight: bold; border: none; margin-top:10px; border-radius: 5px; transition: 0.2s; }
         .btn-complete:hover { background:yellow;}
-        .btn-void { background: linear-gradient(90deg,rgba(5, 173, 78, 1) 0%, rgba(0, 250, 54, 1) 100%); color: white; border:1px solid  #00ff6f; width: 100%; cursor:pointer; padding: 5px; margin-top: 5px;}
+        .btn-void { background: linear-gradient(90deg,rgba(5, 173, 78, 1) 0%, rgba(0, 250, 54, 1) 100%); color: white; width: 100%; font-size: 1rem; cursor: pointer; padding: 5px; font-weight: bold; border: none; margin-top:10px; border-radius: 5px; transition: 0.2s;}
 		.btn-void:hover { background: #1f874c;}
         .total-display { display: flex; justify-content: space-between;font-family: 'Arial', sans-serif; font-size: 1rem; color:red; font-weight: bold; margin: 10px 0; padding-top: 1px; text-align: right;}
         
@@ -252,7 +252,7 @@
             <div class="input-group"><input type="number" id="pPrice" placeholder=" "><label>Price</label></div>
             <div class="input-group"><input type="number" id="pStock" placeholder=" "><label>Stock Qty</label></div>
         </div>
-        <button onclick="saveProduct()" id="btnSave" style="background: var(--primary); color: white; cursor:pointer; font-weight:bold;">SAVE PRODUCT</button>
+        <button onclick="saveProduct()" id="btnSave" style="background: var(--primary);  color: white; width: 100%; font-size: 1rem; cursor: pointer; padding: 5px; font-weight: bold; border: none; margin-top:10px; border-radius: 5px; transition: 0.2s;">SAVE PRODUCT</button>
         <button onclick="resetForm()" id="btnCancel" style="display:none; background: #95a5a6; color:white;">CANCEL</button>
         <hr style="width:100%; margin: 15px 0; border: 0; border-top: 1px solid #eee;">
         Quick Search
@@ -300,7 +300,7 @@
 			<div class="total-display">TOTAL : <span id="summaryTotal">₱0.00</span></div>
 			
 		</div>
-        <button class="btn-complete" onclick="processTransaction();"><i class="fas fa-print"></i> FINISH & PRINT</button>
+        <button class="btn-complete" onclick="processTransaction();"><i class="fas fa-print"></i> PROCEED & PRINT</button>
     </section>
 </div>
 
@@ -318,10 +318,13 @@
         <h2>Sales History</h2>
         <div style="margin-bottom: 15px; display: flex; gap: 10px; align-items: center;">
             <label>Filter View:</label>
-            <select id="salesFilter" onchange="loadSalesHistory()">
-                <option value="daily">Today's Sales</option>
-                <option value="all">All Time History</option>
-            </select>
+<select id="salesFilter" onchange="loadSalesHistory()">
+    <option value="all">All Time</option>
+    <option value="daily">Daily</option>
+    <option value="weekly">Weekly</option>
+    <option value="monthly">Monthly</option>
+    <option value="yearly">Yearly</option>
+</select>
             <button onclick="exportToCSV()" style="background: var(--accent); color: white; border:none; padding: 10px; cursor:pointer; border-radius:4px;"><i class="fas fa-file-export"></i> EXPORT TO CSV</button>
         </div>
         <table width="100%" border="1" style="border-collapse: collapse; text-align:center;">
@@ -712,41 +715,54 @@ function toggleModal(id) {
         };
     }
 }
-
+// loadSalesHistory handleTelegramSend()
 function loadSalesHistory() {
     const filter = document.getElementById('salesFilter').value;
     const tbody = document.getElementById('salesBody');
-    const startOfDay = new Date(new Date().setHours(0,0,0,0)).getTime();
     
+    // Get current time markers
+    const now = new Date();
+    const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+    
+    // Sunday of the current week
+    const startOfWeek = new Date(now.setDate(now.getDate() - now.getDay())).setHours(0,0,0,0);
+    
+    // 1st of the current month
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).getTime();
+    
+    // January 1st of current year
+    const startOfYear = new Date(now.getFullYear(), 0, 1).getTime();
+
     db.transaction("sales").objectStore("sales").getAll().onsuccess = e => {
-        const filtered = e.target.result.filter(s => filter === 'daily' ? s.timestamp >= startOfDay : true).sort((a, b) => b.timestamp - a.timestamp);
-        tbody.innerHTML = filtered.map(s => `<tr><td style="padding:8px;">${new Date(s.timestamp).toLocaleString()}</td><td>${s.items.length} items</td><td>₱${s.total.toFixed(2)}</td><td>${s.method}</td></tr>`).join('');
+        const allSales = e.target.result;
+
+        const filtered = allSales.filter(s => {
+            switch(filter) {
+                case 'daily':   return s.timestamp >= startOfDay;
+                case 'weekly':  return s.timestamp >= startOfWeek;
+                case 'monthly': return s.timestamp >= startOfMonth;
+                case 'yearly':  return s.timestamp >= startOfYear;
+                case 'all':     return true;
+                default:        return true;
+            }
+        }).sort((a, b) => b.timestamp - a.timestamp);
+
+        // Update the global variable for exports or reports
+        currentFilteredSales = filtered;
+
+        // Render to table
+        tbody.innerHTML = filtered.map(s => `
+            <tr>
+                <td style="padding:8px;">${new Date(s.timestamp).toLocaleString()}</td>
+                <td>${s.items.length} items</td>
+                <td>₱${s.total.toFixed(2)}</td>
+                <td>${s.method}</td>
+            </tr>
+        `).join('');
     };
 }
 // Variable to store current view for the button to use
 let currentFilteredSales = [];
-
-function loadSalesHistory() {
-    const filter = document.getElementById('salesFilter').value;
-    const tbody = document.getElementById('salesBody');
-    const startOfDay = new Date(new Date().setHours(0,0,0,0)).getTime();
-    
-    db.transaction("sales").objectStore("sales").getAll().onsuccess = e => {
-        // Save to global variable
-        currentFilteredSales = e.target.result
-            .filter(s => filter === 'daily' ? s.timestamp >= startOfDay : true)
-            .sort((a, b) => b.timestamp - a.timestamp);
-
-        // Update Table
-        tbody.innerHTML = currentFilteredSales.map(s => `
-            <tr>
-                <td>${new Date(s.timestamp).toLocaleString()}</td>
-                <td>${s.items.length} items</td>
-                <td>₱${s.total.toFixed(2)}</td>
-                <td>${s.method}</td>
-            </tr>`).join('');
-    };
-}
 
 // Function to trigger the API call
 async function handleTelegramSend() {
