@@ -31,11 +31,13 @@
         
         .product-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #f9f9f9; }
         .btn-action { border: none; color: white; padding: 5px 10px; border-radius: 3px; cursor: pointer; margin-left: 3px; }
-        
-        .btn-complete { background: var(--edit); color: white; width: 100%; font-size: 1rem; cursor: pointer; padding: 5px; font-weight: bold; border: none; margin-top:10px; border-radius: 5px; transition: 0.2s; }
-        .btn-complete:hover { background:yellow;}
-        .btn-void { background: linear-gradient(90deg,rgba(5, 173, 78, 1) 0%, rgba(0, 250, 54, 1) 100%); color: white; width: 100%; font-size: 1rem; cursor: pointer; padding: 5px; font-weight: bold; border: none; margin-top:10px; border-radius: 5px; transition: 0.2s;}
-		.btn-void:hover { background: #1f874c;}
+		
+		.btnSave { background: var(--primary); color: white; width: 100%; font-size: 1rem; cursor: pointer; padding: 5px; font-weight: bold; border: none; margin-top:10px; border-radius: 5px; transition: 0.2s;}
+        .btnSave:hover {background:#08003D;  }
+		.btn-complete { background:#FFA600; color: white; width: 100%; font-size: 1rem; cursor: pointer; padding: 5px; font-weight: bold; border: none; margin-top:10px; border-radius: 5px; transition: 0.2s; }
+        .btn-complete:hover { background: #B57600;}
+        .btn-void { background: #007A8A ; color: white; width: 100%; font-size: 1rem; cursor: pointer; padding: 5px; font-weight: bold; border: none; margin-top:10px; border-radius: 5px; transition: 0.2s;}
+		.btn-void:hover { background:#066470 ;}
         .total-display { display: flex; justify-content: space-between;font-family: 'Arial', sans-serif; font-size: 1rem; color:red; font-weight: bold; margin: 10px 0; padding-top: 1px; text-align: right;}
         
         /* Modal General Styling */
@@ -276,7 +278,7 @@ background: linear-gradient(90deg,rgba(248, 255, 196, 0.75) 0%, rgba(232, 232, 2
     </h2>
 </div>
     <p><center>Please enter the administrator password:</center></p>
-    <input type="password" id="password-input" value="" autofocus>
+    <input type="password" id="password-input" value="sv" autofocus>
     <div id="login-error" class="error-msg" style="display: none;">Incorrect Password</div>
     <button id="login-btn">Unlock System</button>
   </div>
@@ -304,7 +306,7 @@ background: linear-gradient(90deg,rgba(248, 255, 196, 0.75) 0%, rgba(232, 232, 2
             <div class="input-group"><input type="number" id="pPrice" placeholder=" "><label>Price</label></div>
             <div class="input-group"><input type="number" id="pStock" placeholder=" "><label>Stock Qty</label></div>
         </div>
-        <button onclick="saveProduct()" id="btnSave" style="background: var(--primary);  color: white; width: 100%; font-size: 1rem; cursor: pointer; padding: 5px; font-weight: bold; border: none; margin-top:10px; border-radius: 5px; transition: 0.2s;">SAVE PRODUCT</button>
+        <button onclick="saveProduct()" id="btnSave" class="btnSave">SAVE PRODUCT</button>
         <button onclick="resetForm()" id="btnCancel" style="display:none; background: #95a5a6; color:white;">CANCEL</button>
         <hr style="width:100%; margin: 15px 0; border: 0; border-top: 1px solid #eee;">
         Quick Search
@@ -314,7 +316,7 @@ background: linear-gradient(90deg,rgba(248, 255, 196, 0.75) 0%, rgba(232, 232, 2
 
     <section class="column cart-panel">
         <h3 style="color:var(--accent);">CART ITEMS</h3>
-        <input type="text" id="cartScanner" placeholder="Scan Barcode / Search..." style="width: 100%; background: #05ad4e; font-weight: bold; border: 2px solid var(--accent); box-sizing: border-box;" onkeypress="if(event.key==='Enter') addToCart(this.value)">
+        <input type="text" id="cartScanner"  placeholder="Scan Barcode / Search..." style="width: 100%; background: #05ad4e; font-weight: bold; border: 2px solid var(--accent); box-sizing: border-box;" onkeypress="if(event.key==='Enter') addToCart(this.value)">
         <div style="display: flex; font-size: 11px; font-weight: bold; color: #777; padding: 10px 10px 0;">
             <span style="flex: 2.8; text-align:left;">ITEM</span>
             <span style="flex: 1; text-align: right;">PRICE</span>
