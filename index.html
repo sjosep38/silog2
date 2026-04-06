@@ -24,7 +24,7 @@
         
         .products-panel { flex:1; border-top: 8px solid var(--primary); border-bottom: 8px solid var(--primary); border-left: 1px solid var(--primary); border-right: 1px solid var(--primary); }
         .cart-panel { flex: 1; border-top: 8px solid var(--accent);  border-bottom: 8px solid var(--accent); border-left: 1px solid var(--accent); border-right: 1px solid var(--accent); }
-        .checkout-panel { flex: .5; border-top: 8px solid var(--edit); border-bottom: 8px solid var(--edit); border-left: 1px solid var(--edit); border-right: 1px solid var(--edit); }
+        .checkout-panel { flex: .4; border-top: 8px solid var(--edit); border-bottom: 8px solid var(--edit); border-left: 1px solid var(--edit); border-right: 1px solid var(--edit); }
 
         .scroll-list { flex: 1; overflow-y: auto; border: 1px solid #eee; margin-top: 10px; border-radius: 5px; }
         input, select, button { padding: 8px; margin: 5px 0; border: 1px solid #ddd; border-radius: 4px; }
@@ -45,7 +45,7 @@
         .modal-content { background: white; margin: 2% auto; padding: 10px; width: 90%; max-width: 850px; max-height: 85vh;  overflow-y: auto;}
 
         /* Custom Alert Specific Styling */
-        #alert-box { max-width: 350px; text-align: center; border-top: 10px solid var(--primary); }
+        #alert-box { margin-top:200px; max-width: 350px; text-align: center; border-top: 10px solid var(--primary); }
 
         #receipt-print { display: none; font-family: 'Courier New', Courier, monospace; width: 58mm; padding: 2mm; color: #000; }
         @media print {
@@ -162,8 +162,7 @@
     background: rgba(40, 40, 40, 0.9);
     padding: 30px;
     border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    box-shadow: 0 10px 30px rgba(0,9,0,0.9);
     color:#4c5c4c;
     font-family: 'Segoe UI', sans-serif;
 }
@@ -213,13 +212,14 @@
 }
 /* Modal Container Styling */
 .modal-content {
-background: linear-gradient(90deg,rgba(248, 255, 196, 0.75) 0%, rgba(232, 232, 255, 100) 100%);
+background: #DEDEDE;
  margin: 2% auto;
   padding: 10px;
   width: 90%;
   max-width: 850px;
   max-height: 85vh;
   overflow-y: auto; /* Enables the scrollbar */
+  border-top: 10px solid var(--primary);
 }
 
 /* Custom Scrollbar Styling for the Modal */
@@ -231,35 +231,11 @@ background: linear-gradient(90deg,rgba(248, 255, 196, 0.75) 0%, rgba(232, 232, 2
   background: gray;
   background: orange;
  
-  border-radius: 1px 10px 10px 1px;
+  border-radius: 1px 1px 10px 1px;
 }
 
 .modal-content::-webkit-scrollbar-track {
   background: transparent;
-}
-
-/* Base styles for Mobile (default) */
-.app-container {
-  width: 90%;
-  margin: 0 auto;
-}
-
-
-/* Tablet Styles */
-@media (min-width: 768px) {
-  .app-container {
-    width: 100%;
-  }
-  .content-box {
-    flex-direction: row; /* Side-by-side elements on tablets */
-  }
-}
-
-/* PC/Desktop Styles */
-@media (min-width: 1360px) {
-  .app-container {
-    max-width: 1360px; /* Prevent it from getting too wide on huge monitors */
-  }
 }
    </style>
 </head>
@@ -359,10 +335,10 @@ background: linear-gradient(90deg,rgba(248, 255, 196, 0.75) 0%, rgba(232, 232, 2
     </section>
 </div>
 
-<div id="alertModal" class="modal">
-    <div id="alert-box" class="modal-content">
+<div id="alertModal"  class="modal">
+    <div id="alert-box" style="" class="modal-content">
         <div id="alertIcon" style="font-size: 2rem; margin-bottom: 15px;"></div>
-        <h3 id="alertMsg" style="color: black; margin-bottom: 20px;"></h3>
+        <h3 id="alertMsg" style="margin-bottom: 20px;"></h3>
         <button onclick="closeAlert()" style="background: var(--primary); color: white; padding: 12px; border: none; width: 100%; cursor:pointer; font-weight:bold; border-radius: 4px;">CONTINUE</button>
     </div>
 </div>
@@ -408,7 +384,7 @@ background: linear-gradient(90deg,rgba(248, 255, 196, 0.75) 0%, rgba(232, 232, 2
 <div id="app-container" style="display: none;"></div>
 
 <div id="confirmModal" class="modal">
-    <div class="modal-content" style="max-width:300px; text-align:center;">
+    <div class="modal-content" style="max-width:300px;  margin-top:200px; text-align:center;">
         <div id="confirmIcon" style="font-size:2rem; margin-bottom:10px;">
             <i class="fas fa-exclamation-triangle" style="color:var(--warning)"></i>
         </div>
@@ -421,14 +397,14 @@ background: linear-gradient(90deg,rgba(248, 255, 196, 0.75) 0%, rgba(232, 232, 2
 </div>
 
 <div id="passModal" class="modal">
-    <div class="modal-content" style="max-width:350px; height:190px;">
+    <div class="modal-content" style="max-width:350px; margin-top:200px; height:190px;">
         <h3 style="margin-top:1px;"><center><i class="fas fa-lock"></i>Manager Authorization Required</center></h3>
         <input type="password" id="managerPinInput" class="form-control" placeholder="Enter Manager PIN" style="text-align:center; width:94%;">
         <div style="display:flex; gap:10px;">
             <button id="submitPin" class="btn-primary" class="btn-secondary" style="flex:1; background: var(--primary); color: white; padding: 12px; border: none; width: 100%; cursor:pointer; font-weight:bold; border-radius: 4px;">SUBMIT</button>
             <button onclick="document.getElementById('passModal').style.display='none'" class="btn-secondary" class="btn-secondary" style="flex:1; background: var(--primary); color: white; padding: 12px; border: none; width: 100%; cursor:pointer; font-weight:bold; border-radius: 4px;">CANCEL</button>
 		</div>
-		<center>Notice: Please note that certain selected items &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; are not eligible for discounts.</center>
+		<center>Notice: Please note that certain selected items are not eligible for discounts.</center>
     </div>
 </div>
 
