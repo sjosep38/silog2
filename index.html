@@ -229,9 +229,7 @@ background: #DEDEDE;
 
 .modal-content::-webkit-scrollbar-thumb {
   background: gray;
-  background: orange;
- 
-  border-radius: 1px 1px 10px 1px;
+  background: gray;
 }
 
 .modal-content::-webkit-scrollbar-track {
@@ -254,7 +252,7 @@ background: #DEDEDE;
     </h2>
 </div>
     <p><center>Please enter the administrator password:</center></p>
-    <input type="password" id="password-input" value="sv" autofocus>
+    <input type="password" id="password-input" value="" autofocus>
     <div id="login-error" class="error-msg" style="display: none;">Incorrect Password</div>
     <button id="login-btn">Unlock System</button>
   </div>
@@ -350,7 +348,6 @@ background: #DEDEDE;
         <div style="margin-bottom: 15px; display: flex; gap: 10px; align-items: center;">
             <label>Filter View:</label>
 			<select id="salesFilter" onchange="loadSalesHistory();" style="width:300px;">
-				<option value="all">All Time (Since System Launch)</option>
 				<option value="daily">Daily (Today)</option>
 				<option value="weekly">Weekly (Last 7 Days)</option>
 				<option value="monthly">Monthly (Past 30 Days)</option>
