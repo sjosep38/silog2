@@ -789,7 +789,7 @@ function toggleModal(id) {
     if(id === 'inventoryModal') {
         db.transaction("products").objectStore("products").getAll().onsuccess = e => {
             document.getElementById('invBody').innerHTML = e.target.result.map(v => 
-                `<tr><td style="padding:5px;">${v.barcode}</td><td>${v.name}</td><td>₱${v.price.toFixed(2)}</td><td style="color:${v.stock < 10 ? 'red' : 'green'}">${v.stock}</td><td>${v.sold || 0}</td></tr>`
+                `<tr><td style="padding:5px;">${v.barcode}</td><td>${v.name}</td><td>₱${v.price.toFixed(2)}</td><td style="color:${v.stock < 10 ? 'red' : 'black'}">${v.stock}</td><td>${v.sold || 0}</td></tr>`
             ).join('');
         };
     }
