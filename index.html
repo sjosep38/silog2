@@ -12,14 +12,14 @@
             --accent: #27ae60; 
             --danger: #e74c3c; 
             --edit: #f39c12;
-            --bg: #f4f7f6; 
+            --bg: gray; 
         }
         body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--bg); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }        
         .dashboard-header { display: flex; align-items: center; justify-content: space-between; background: linear-gradient(90deg, #05354a 0%, #274359 100%); padding: 1px 15px; color: #fff; height: 50px; margin:0; }
         .nav-btn { border:none; background:rgba(255,255,255,0.1); color:#fff; padding: 8px 15px; width: 120px; border-radius: 4px; cursor:pointer; margin-left: 10px; transition: 0.3s; }
         .nav-btn:hover { background: rgba(255,255,255,0.2); }
 
-        .app-container { display: flex; flex: 1; gap: 5px; padding: 10px; box-sizing: border-box; overflow: hidden; }
+        .app-container { display: flex; flex: 1; gap: 5px; padding: 10px; box-sizing: border-box; overflow: hidden; max-height:800px;}
         .column { background: white; padding: 15px; display: flex; flex-direction: column; box-shadow: 0 2px 5px rgba(0,0,0,0.5); height: 100%; box-sizing: border-box; }
         
         .products-panel { flex:1; border-top: 8px solid var(--primary); border-bottom: 8px solid var(--primary); border-left: 1px solid var(--primary); border-right: 1px solid var(--primary); }
@@ -327,9 +327,9 @@ background: #DEDEDE;
             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 5px; font-size: 1rem;">Change :<b id="changeDisplay" style="color:black">₱0.00</b></div>
 			<hr>
 			<div class="total-display">TOTAL : <span id="summaryTotal">₱0.00</span></div>
-			
+			<button class="btn-complete" onclick="processTransaction();"style="margin-top:105px;"><i class="fas fa-print"></i> PROCEED & PRINT</button>
 		</div>
-        <button class="btn-complete" onclick="processTransaction();"><i class="fas fa-print"></i> PROCEED & PRINT</button>
+        
     </section>
 </div>
 
