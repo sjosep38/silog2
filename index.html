@@ -12,20 +12,18 @@
             --accent: #27ae60; 
             --danger: #e74c3c; 
             --edit: #f39c12;
-            --bg: gray; 
-            --bg: gray; 
-        }
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--bg); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }        
+	   }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }        
         .dashboard-header { display: flex; align-items: center; justify-content: space-between; background: linear-gradient(90deg, #05354a 0%, #274359 100%); padding: 1px 15px; color: #fff; height: 50px; margin:0; }
-        .nav-btn { border:none; background:rgba(255,255,255,0.1); color:#fff; padding: 8px 15px; width: 120px; border-radius: 4px; cursor:pointer; margin-left: 10px; transition: 0.3s; }
+        .nav-btn { border:none; background:rgba(255,255,255,0.1); color:#fff; padding: 8px 15px; border-radius: 4px; cursor:pointer;  transition: 0.3s; }
         .nav-btn:hover { background: rgba(255,255,255,0.2); }
 
         .app-container { display: flex; flex: 1; gap: 5px; padding: 10px; box-sizing: border-box; overflow: hidden; max-height:800px;}
         .column { background: white; padding: 15px; display: flex; flex-direction: column; box-shadow: 0 2px 5px rgba(0,0,0,0.5); height: 100%; box-sizing: border-box; }
         
-        .products-panel { flex:1; border-top: 8px solid var(--primary); border-bottom: 8px solid var(--primary); border-left: 1px solid var(--primary); border-right: 1px solid var(--primary); }
-        .cart-panel { flex: 1; border-top: 8px solid var(--accent);  border-bottom: 8px solid var(--accent); border-left: 1px solid var(--accent); border-right: 1px solid var(--accent); }
-        .checkout-panel { flex: .5; border-top: 8px solid var(--edit); border-bottom: 8px solid var(--edit); border-left: 1px solid var(--edit); border-right: 1px solid var(--edit); }
+        .products-panel { flex:1; border-top: 8px solid var(--primary);border-radius:20px; border-bottom: 8px solid var(--primary); border-left: 1px solid var(--primary); border-right: 1px solid var(--primary); }
+        .cart-panel { flex: 1; border-top: 8px solid var(--accent); border-radius:20px; border-bottom: 8px solid var(--accent); border-left: 1px solid var(--accent); border-right: 1px solid var(--accent); }
+        .checkout-panel { flex: .5; border-top: 8px solid var(--edit);border-radius:20px; border-bottom: 8px solid var(--edit); border-left: 1px solid var(--edit); border-right: 1px solid var(--edit); }
 
         .scroll-list { flex: 1; overflow-y: auto; border: 1px solid #eee; margin-top: 10px; border-radius: 5px; }
         input, select, button { padding: 8px; margin: 5px 0; border: 1px solid #ddd; border-radius: 4px; }
@@ -236,6 +234,24 @@ background: #DEDEDE;
 .modal-content::-webkit-scrollbar-track {
   background: transparent;
 }
+
+.btn-export {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 15px;
+	text-align:center;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-export:hover {
+    background-color: #218838;
+}
    </style>
 </head>
 <body>
@@ -266,8 +282,8 @@ background: #DEDEDE;
     <div>
         <button class="nav-btn" onclick="toggleModal('inventoryModal')"><i class="fas fa-boxes"></i> Stocks</button>
         <button id="sendTelegramBtn1" class="nav-btn" onclick="toggleModal('salesModal')" style="padding: 8px; cursor: pointer;"><i class="fas fa-file-invoice-dollar"></i> Sales Report</button>
-<button id="finalActionBtn" onclick="sendExportAndExit()"  style="background:rgba(255,255,255,0.1);margin-left: 10px; color: white; padding: 8px ; cursor: pointer; border: none; border-radius: 4px;">
-    <i class=""></i>  Log Out
+<button id="finalActionBtn" onclick="sendExportAndExit()"  style="background:rgba(255,255,255,0.1);color: white; padding: 8px ; cursor: pointer; border: none; border-radius: 4px;">
+    <i class="fas fa-sign-out-alt"></i> Log Out
 </button>
 </h3>
 
@@ -277,7 +293,7 @@ background: #DEDEDE;
         <input type="hidden" id="pId">
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px;">
             <div class="input-group"><input type="text" id="pBarcode" maxlength="15" placeholder=" "><label>Barcode/SKU</label></div>
-            <div class="input-group"><input type="text" id="pName" maxlength="21" placeholder=" "><label>Item Name</label></div>
+            <div class="input-group"><input type="text" id="pName" maxlength="60" placeholder=" "><label>Item Name</label></div>
             <div class="input-group"><input type="number" id="pPrice" placeholder=" "><label>Price</label></div>
             <div class="input-group"><input type="number" id="pStock" placeholder=" "><label>Stock Qty</label></div>
         </div>
@@ -300,7 +316,7 @@ background: #DEDEDE;
 			<span style="flex: 1; text-align: right;">ACTION</span>
             <span style="width: 20px;"></span>
         </div>
-        <div id="cartItems" class="scroll-list"></div>
+        <div id="cartItems" class="scroll-list"style="padding: 10px;border-color:green;"></div>
         <div style="padding: 10px; background: #f8f9fa;">
             <p style="margin:0">Total Items: <b id="summaryQty">0</b></p>
             <button class="btn-void" onclick="voidCart()">VOID TRANSACTION</button>
@@ -328,7 +344,7 @@ background: #DEDEDE;
 			<div class="total-display">TOTAL : <span id="summaryTotal">₱0.00</span></div>
 			
 			 <label>Cash Received:</label>
-            <input type="number" id="cashRendered" placeholder="0.00" style=" width:100%; font-size: 1.1rem; padding:5PX; border: 2px solid var(--primary); box-sizing: border-box; text-align: right;" oninput="updateTotals()">
+            <input type="number" id="cashRendered" placeholder="0.00" style=" text-align: center; width:100%; font-size: 1.1rem; padding:5px; border: 2px solid var(--primary); box-sizing: border-box;" oninput="updateTotals()">
 			<button class="btn-complete" onclick="processTransaction();"style="  margin-top:5px;"><i class="fas fa-print"></i> PROCEED & PRINT</button>
 		</div>
         
@@ -345,9 +361,9 @@ background: #DEDEDE;
 <div id="receipt-print"></div>
 <div id="salesModal" class="modal">
     <div class="modal-content">
-        <button onclick="toggleModal('salesModal')" style="float:right; background:var(--danger); color:white; border:none; padding:5px 10px; cursor:pointer;">Close</button>
-        <h2>Sales History</h2>
-        <div style="margin-bottom: 15px; display: flex; gap: 10px; align-items: center;">
+        	<h2>Sales History</h2>
+		<div style="display: flex; flex-direction: row; gap: 10px; width: 100%;">
+               <div style="margin-bottom: 15px; display: flex; gap: 10px; align-items: center;">
             <label>Filter View:</label>
 			<select id="salesFilter" onchange="loadSalesHistory();" style="width:300px;">
 				<option value="daily">Daily (Today)</option>
@@ -357,9 +373,11 @@ background: #DEDEDE;
 				<option value="all">All Time (Since System Launch)</option>
 			</select>
          <div style="display: inline-flex; border-radius: 4px; overflow: hidden; ">
-    <button id="sendTelegramBtn" onclick="exportToCSV()" style="background: var(--accent); color: white;padding: 10px 15px; cursor: pointer;">
+    <button id="sendTelegramBtn" onclick="exportToCSV()" style="width: 220px; background: var(--accent); color: white;padding: 10px 15px; cursor: pointer;">
         <i class="fas fa-file-export"></i> Export Data Report CSV
     </button>
+	 <button onclick="toggleModal('salesModal')" style="margin-left:10px; width: 220px;float:right; background:var(--danger); color:white; border:none; cursor:pointer;">Close</button>
+		</div>
 </div>
 	   </div>
         <table width="100%" border="1" style="border-collapse: collapse; text-align:center;">
@@ -372,11 +390,19 @@ background: #DEDEDE;
 
 <div id="inventoryModal" class="modal">
     <div class="modal-content">
-        <button onclick="toggleModal('inventoryModal')" style="float:right; background:var(--danger); color:white; border:none; padding:5px 10px; cursor:pointer;">Close</button>
         <h2>Current Stock Status</h2>
-		<button class="btn-action" style="background:var(--accent); margin-bottom: 10px; width: 100%;" onclick="toggleModal('bulkUploadModal');toggleModal('inventoryModal')">
-    <i class="fas fa-file-import"></i> BULK UPLOAD (CSV/TXT)
-</button>
+<div style="display: flex; flex-direction: row; gap: 10px; width: 100%;">
+   <button class="nav-btn" onclick="toggleModal('inventoryModal'); toggleModal('salesModal')" style="width: 25%;  background:Blue;color:white; "><i class="fas fa-boxes"></i>Sales Report</button>
+   <button class="btn-action" style="background:var(--accent); width: 25%;" onclick="toggleModal('bulkUploadModal');toggleModal('inventoryModal')">
+        <i class="fas fa-file-import"></i> Bulk Upload (csv/txt)
+    </button>
+    
+    <button class="btn btn-danger" style="width: 25%;  background:gray;color:white; " onclick="toggleModal('lowStockModal');toggleModal('inventoryModal');">
+        Low Stocks Report
+    </button>
+	 <button onclick="toggleModal('inventoryModal')" style="width: 25%; background:var(--danger); color:white; cursor:pointer;">Close</button>
+       
+</div>
         <table width="100%" border="1" style="border-collapse: collapse; margin-top:10px; align-items: center;">
             <thead><tr style="background:#eee;" ><th>BARCODE</th><th>ITEMS</th><th>PRICE</th><th>STOCK</th><th>SOLD</th></tr></thead>
             <tbody id="invBody"  style="text-align:center;"></tbody>
@@ -435,6 +461,21 @@ background: #DEDEDE;
                 CANCEL
             </button>
         </div>
+    </div>
+</div>
+<div id="lowStockModal" class="modal">
+    <div class="modal-content">
+        <h3>Critical Stock (Less than 10)</h3>
+				<div style="display: flex; flex-direction: row; gap: 10px; width: 100%;">
+				<button class="nav-btn" onclick="toggleModal('inventoryModal');toggleModal('lowStockModal');"style="width: 50%; background:Purple; color:white; cursor:pointer;"><i class="fas fa-boxes"></i> Stocks Inventory</button>
+			<button onclick="exportLowStockToCSV()" class="btn-exportx" style="text-align:center; width: 50%; background:orange; color:white; cursor:pointer;">Download Restock List</button>
+			<button onclick="toggleModal('lowStockModal')"style="width: 50%; background:var(--danger); color:white; cursor:pointer;">Close</button>
+		</div>
+        </table>
+		        <table width="100%" border="1" style="border-collapse: collapse; margin-top:10px; align-items: center;">
+            <thead><tr style="background:#eee;" ><th>BARCODE</th><th>ITEMS</th><th>PRICE</th><th>STOCK</th><th>SOLD</th></tr></thead>
+            <tbody id="lowStockBody"  style="text-align:center;"></tbody>
+        </table>
     </div>
 </div>
 <div id="tg-chat-wrapper">
@@ -519,7 +560,9 @@ function renderProducts() {
                 list.innerHTML += `
                 <div class="product-item">
                     <div onclick="addToCart('${v.barcode}')" style="cursor:pointer; flex:1">
-                        <b>${v.name}</b><br>
+                      <b style="text-align: left; max-width: 50ch; display: inline-block;">
+            <span>${v.name}</span>
+        </b><br>
                         <small>₱${v.price.toFixed(2)} | <span style="${stockColor}">Stock: ${v.stock}</span></small>
                     </div>
                     <div>
@@ -602,13 +645,13 @@ function renderCart() {
     const cont = document.getElementById('cartItems');
     // Map through the cart and generate HTML
     cont.innerHTML = cart.map((item, idx) => `
-        <div class="product-item" style="display: flex; align-items: center;  color: red; padding: 0px 5px; border-bottom: 1px solid #eee;">
-            <span style="flex: 4.6; text-align: left;"><b>${item.name}</b></span>
+        <div class="product-item" style="display: flex; align-items: center;  color: green; padding: 0px 5px; border-bottom: 1px dashed green;">
+            <span style="flex: 4.6; text-align: left;max-width: 40ch;"><b>${item.name}</b></span>
             <span style="flex: 1; text-align: right;">₱${item.price.toLocaleString()}</span>
             
             <input type="number" 
                    value="${item.qty}" 
-                   style="width: 12px; flex: 1; text-align: right;font-size:16px; border:none; color: red; margin-left: 10px;" 
+                   style="width: 12px; flex: 1; text-align: right;font-size:16px; border:none; color: green; margin-left: 10px;" 
                    onchange="updateCartQty(${idx}, this.value)">
             
             <span style="flex: 1; margin-left: 15px; text-align: left;">₱${(item.price * item.qty).toFixed(0)}</span>
@@ -1264,6 +1307,77 @@ fileInput.addEventListener('change', function() {
         uploadBtn.style.cursor = "not-allowed";
     }
 });
+function toggleModal(id) {
+    const m = document.getElementById(id);
+    if (!m) return;
+    
+    m.style.display = (m.style.display === "block") ? "none" : "block";
+
+    if (m.style.display === "block") {
+        if (id === 'salesModal') loadSalesHistory();
+        if (id === 'inventoryModal') loadInventoryData('invBody', false);
+        if (id === 'lowStockModal') loadInventoryData('lowStockBody', true);
+    }
+}
+function loadInventoryData(tableId, onlyLowStock = false) {
+    db.transaction("products").objectStore("products").getAll().onsuccess = e => {
+        let products = e.target.result;
+
+        // 1. Sort by stock availability (Low to High)
+        products.sort((a, b) => a.stock - b.stock);
+
+        // 2. Filter if it's the Low Stock Modal
+        if (onlyLowStock) {
+            products = products.filter(v => v.stock < 10);
+        }
+
+        const html = products.map(v => `
+            <tr>
+                <td style="padding:5px;">${v.barcode}</td>
+                <td>${v.name}</td>
+                <td>₱${v.price.toFixed(2)}</td>
+                <td style="color:${v.stock < 10 ? 'red' : 'black'}">${v.stock}</td>
+                <td>${v.sold || 0}</td>
+            </tr>
+        `).join('');
+
+        document.getElementById(tableId).innerHTML = html;
+    };
+}
+function exportLowStockToCSV() {
+    db.transaction("products").objectStore("products").getAll().onsuccess = e => {
+        // 1. Filter the data for stock < 11
+        const lowStockData = e.target.result.filter(v => v.stock < 11);
+
+        if (lowStockData.length === 0) {
+            return alert("No low stock items to export!");
+        }
+
+        // 2. Define CSV Headers
+        const csvRows = [["Barcode", "Product Name", "Price", "Current Stock", "Total Sold"]];
+
+        // 3. Map the filtered data into rows
+        lowStockData.forEach(v => {
+            csvRows.push([
+                v.barcode, 
+                `${v.name}`, // Quotes handle names with commas
+                v.price.toFixed(2), 
+                v.stock, 
+                v.sold || 0
+            ]);
+        });
+
+        // 4. Create and trigger download
+        const csvContent = csvRows.map(row => row.join(",")).join("\n");
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        
+        const link = document.createElement("a");
+        link.setAttribute("href", url);
+        link.setAttribute("download", `restock_report_${new Date().toISOString().slice(0,10)}.csv`);
+        link.click();
+    };
+}
 </script>
 </body>
 </html>
