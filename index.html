@@ -895,11 +895,11 @@ function printReceipt(s) {
     div.style.fontFamily = "Arial, sans-serif";
 
     div.innerHTML = `
-        <div style="text-align:center; text-transform: uppercase; margin-bottom: 10px;">
-            <strong style="font-size: 1em;">SEANSO SARI-SARI STORE</strong><br>
-            <span style="font-size: 0.8em;">#36 Donnan Bldg Josefina st. </span><br>
-			<span style="font-size: 0.8em;">4th avenue Caloocan City </span><br>
-            <span style="font-size: 0.8em;">mobile number: 0950 682 5698</span>
+        <div style="text-align:center;">
+            <strong style="font-size: 1em;">MEICAI SARI-SARI STORE</strong><br>
+            <span style="font-size: 0.8em;">#36 Donnan Bldg Josefina Street </span><br>
+			<span style="font-size: 0.8em;">4th Avenue Caloocan City Phil.</span><br>
+            <span style="font-size: 0.8em;">Mobile Number: 0950 682 5698</span>
         </div>
         
         <hr style="border-top: 2px dashed #000;">
@@ -914,7 +914,7 @@ function printReceipt(s) {
         
         ${s.items.map(i => `
             <div style="margin-bottom: 2px;">
-                <div style="font-weight: bold;">${i.name}</div>
+                <div style="font-weight: bold; text-transform: uppercase;">${i.name}</div>
                 <div style="display: flex; justify-content: space-between;">
                     <span>${i.qty} x ${i.price.toFixed(2)}</span>
                     <span>₱${(i.qty * i.price).toFixed(2)}</span>
