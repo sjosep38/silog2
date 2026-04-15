@@ -291,7 +291,7 @@ background: #DEDEDE;
 <div id="app-container" style="display: none;">
     </div>
 <h3 class="dashboard-header">
-    <span><i class="fas fa-cash-register"></i> MEI-CAI WHOLESALE & RETAIL STORE <small style="font-weight: normal; opacity: 0.8; font-size: 0.7em;">v2.0</small></span>
+    <span><i class="fas fa-cash-register"></i> MEI CAI WHOLESALE & RETAIL STORE <small style="font-weight: normal; opacity: 0.8; font-size: 0.7em;">POS v2.0</small></span>
     <div>
 	<button onclick="openUtangModal()" style="background:rgba(255,255,255,0.1);color: white; padding: 8px ; cursor: pointer; border: none; border-radius: 4px;">
     <i class="fas fa-book"></i> CREDIT LEDGER
@@ -354,8 +354,10 @@ background: #DEDEDE;
 				<option value="Credit Card">Credit Card</option>-->
 				<option value="Credit Utang">Credit</option>
 			</select>
-			<label>Customer Name:</label>
+			<label>Customer Name :</label>
 				<input type="text" id="customerName" placeholder="Enter Name" style="width:94%; font-size:16px; padding: 5px; border: 1px solid #ccc; border-radius: 4px;">
+			<label>Password :</label>
+			<input type="password" id="customerpassword" placeholder="Enter Customer PIN" style="width:94%; font-size:16px; padding: 5px; border: 1px solid #ccc; border-radius: 4px;">
 
             <button id="discountBtn" onclick="askDiscountPassword()" style=" background:#fff; border: 1px solid var(--edit); color:orange; cursor: pointer; padding: 10px; font-weight: bold; width:100%">
                 <i class="fas fa-percents"></i> APPLY 20% DISCOUNT
@@ -896,16 +898,16 @@ function printReceipt(s) {
 
     div.innerHTML = `
         <div style="text-align:center;">
-            <strong style="font-size: 1em;">MEICAI SARI-SARI STORE</strong><br>
-            <span style="font-size: 0.8em;">#36 Donnan Bldg Josefina Street </span><br>
-			<span style="font-size: 0.8em;">4th Avenue Caloocan City Phil.</span><br>
-            <span style="font-size: 0.8em;">Mobile Number: 0950 682 5698</span>
+            <strong style="font-size: 1.1em;">MEICAI  STORE</strong><br>
+            <span style="font-size: 0.9em;">#36 Donnan Bldg Josefina Street </span><br>
+			<span style="font-size: 0.9em;">4th Avenue Caloocan City Phil.</span><br>
+            <span style="font-size: 0.9em;">Mobile Number: 0950 682 5698</span>
         </div>
         
         <hr style="border-top: 2px dashed #000;">
         
         <div style="margin-bottom: 8px;">
-            ${new Date(s.timestamp).toLocaleString()}<br>
+            Date:${new Date(s.timestamp).toLocaleString()}<br>
             Customer: ${customer}<br>
             Method: ${s.method}
         </div>
@@ -914,7 +916,7 @@ function printReceipt(s) {
         
         ${s.items.map(i => `
             <div style="margin-bottom: 2px;">
-                <div style="font-weight: bold; text-transform: uppercase;">${i.name}</div>
+                <div style="font-weight: bold; text-transform: Lowercase;">${i.name}</div>
                 <div style="display: flex; justify-content: space-between;">
                     <span>${i.qty} x ${i.price.toFixed(2)}</span>
                     <span>₱${(i.qty * i.price).toFixed(2)}</span>
@@ -1731,7 +1733,7 @@ function settleUtang(timestamp) {
 
                 // 1. Update status and Print
                 data.status = "Paid";
-                data.method = "Credit(Settled)";
+                data.method = "Credit ( Settled )";
                 printReceipt(data); 
 
                 // 2. Delete the record via the cursor
