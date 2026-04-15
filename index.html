@@ -916,7 +916,7 @@ function printReceipt(s) {
         
         ${s.items.map(i => `
             <div style="margin-bottom: 2px;">
-                <div style="font-weight: bold; text-transform: Lowercase;">${i.name}</div>
+                <div style="font-weight: bold; text-transform: Uppercase;">${i.name}</div>
                 <div style="display: flex; justify-content: space-between;">
                     <span>${i.qty} x ${i.price.toFixed(2)}</span>
                     <span>₱${(i.qty * i.price).toFixed(2)}</span>
