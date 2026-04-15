@@ -886,7 +886,6 @@ function processTransaction() {
     };
 }
 function printReceipt(s) {
-let printWindow = window.open('', '', 'width=1,height=1');
     const div = document.getElementById('receipt-print');
     
     const customer = s.customerName ? s.customerName.toLowerCase() : "WALK-IN";
