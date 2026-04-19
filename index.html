@@ -497,6 +497,8 @@ background: #DEDEDE;
 				<button class="nav-btn" onclick="toggleModal('inventoryModal');toggleModal('lowStockModal');"style="width: 50%; background:Purple; color:white; cursor:pointer;"><i class="fas fa-boxes"></i> Stocks Inventory</button>
 			<button onclick="exportLowStockToCSV()" class="btn-exportx" style="text-align:center; width: 50%; background:orange; color:white; cursor:pointer;">Download Restock List</button>
 			<button onclick="toggleModal('lowStockModal')"style="width: 50%; background:var(--danger); color:white; cursor:pointer;">Close</button>
+			<button onclick="exportLowStock1ToCSV()" class="btn-exportx" style="text-align:center; width: 50%; background:orange; color:white; cursor:pointer;">Download All</button>
+			
 		</div>
         </table>
 		        <table width="100%" border="1" style="border-collapse: collapse; margin-top:10px; align-items: center;">
@@ -1489,6 +1491,40 @@ function loadInventoryData(tableId, onlyLowStock = false) {
     };
 }
 function exportLowStockToCSV() {
+    db.transaction("products").objectStore("products").getAll().onsuccess = e => {
+        // 1. Filter the data for stock < 11
+        const lowStockData = e.target.result.filter(v => v.stock < 11);
+
+        if (lowStockData.length === 0) {
+            return alert("No low stock items to export!");
+        }
+
+        // 2. Define CSV Headers
+        const csvRows = [["Barcode", "Product Name", "Price", "Current Stock", "Total Sold"]];
+
+        // 3. Map the filtered data into rows
+        lowStockData.forEach(v => {
+            csvRows.push([
+                v.barcode, 
+                `${v.name}`, // Quotes handle names with commas
+                v.price.toFixed(2), 
+                v.stock, 
+                v.sold || 0
+            ]);
+        });
+
+        // 4. Create and trigger download
+        const csvContent = csvRows.map(row => row.join(",")).join("\n");
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        
+        const link = document.createElement("a");
+        link.setAttribute("href", url);
+        link.setAttribute("download", `restock_report_${new Date().toISOString().slice(0,10)}.csv`);
+        link.click();
+    };
+}
+function exportLowStock1ToCSV() {
     db.transaction("products").objectStore("products").getAll().onsuccess = e => {
         // 1. Filter the data for stock < 11
         const lowStockData = e.target.result.filter(v => v.stock < 11);
