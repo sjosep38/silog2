@@ -419,15 +419,17 @@ background: #DEDEDE;
     <div class="modal-content">
         <h2>Current Stock Status</h2>
 <div style="display: flex; flex-direction: row; gap: 10px; width: 100%;">
-   <button class="nav-btn" onclick="toggleModal('inventoryModal'); toggleModal('salesModal')" style="width: 25%;  background:Blue;color:white; "><i class="fas fa-boxes"></i>Sales Report</button>
-   <button class="btn-action" style="background:var(--accent); width: 25%;" onclick="toggleModal('bulkUploadModal');toggleModal('inventoryModal')">
-        <i class="fas fa-file-import"></i> Bulk Upload (csv/txt)
+   <button class="nav-btn" onclick="toggleModal('inventoryModal'); toggleModal('salesModal')" style="width: 20%;  background:Blue;color:white; "><i class="fas fa-boxes"></i>Sales Report</button>
+   <button class="btn-action" style="background:var(--accent); width: 20%;" onclick="toggleModal('bulkUploadModal');toggleModal('inventoryModal')">
+        <i class="fas fa-file-import"></i> Bulk Upload
     </button>
     
-    <button class="btn btn-danger" style="width: 25%;  background:gray;color:white; " onclick="toggleModal('lowStockModal');toggleModal('inventoryModal');">
+    <button class="btn btn-danger" style="width: 20%;  background:gray;color:white; " onclick="toggleModal('lowStockModal');toggleModal('inventoryModal');">
         Low Stocks Report
     </button>
-	 <button onclick="toggleModal('inventoryModal')" style="width: 25%; background:var(--danger); color:white; cursor:pointer;">Close</button>
+	 <button onclick="exportAllStockToCSV()" class="btn-exportx" style="text-align:center; width: 20%; background:orange; color:white; cursor:pointer;">Download All Stocks </button>
+			
+	 <button onclick="toggleModal('inventoryModal')" style="width: 20%; background:var(--danger); color:white; cursor:pointer;">Close</button>
        
 </div>
         <table width="100%" border="1" style="border-collapse: collapse; margin-top:10px; align-items: center;">
@@ -1749,6 +1751,40 @@ function settleUtang(timestamp) {
             console.error("End of records. No match found for:", timestamp);
             showAlert("Error: Record not found in database.", "error");
         }
+    };
+}
+function exportAllStockToCSV() {
+    db.transaction("products").objectStore("products").getAll().onsuccess = e => {
+        // 1. Filter the data for stock < 99999
+        const lowStockData = e.target.result.filter(v => v.stock < 99999);
+
+        if (lowStockData.length === 0) {
+            return alert("No low stock items to export!");
+        }
+
+        // 2. Define CSV Headers
+        const csvRows = [["Barcode", "Product Name", "Price", "Current Stock", "Total Sold"]];
+
+        // 3. Map the filtered data into rows
+        lowStockData.forEach(v => {
+            csvRows.push([
+                v.barcode, 
+                `${v.name}`, // Quotes handle names with commas
+                v.price.toFixed(2), 
+                v.stock, 
+                v.sold || 0
+            ]);
+        });
+
+        // 4. Create and trigger download
+        const csvContent = csvRows.map(row => row.join(",")).join("\n");
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        
+        const link = document.createElement("a");
+        link.setAttribute("href", url);
+        link.setAttribute("download", `AllStock_Report_${new Date().toISOString().slice(0,10)}.csv`);
+        link.click();
     };
 }
 </script>
