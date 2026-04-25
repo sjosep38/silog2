@@ -22,8 +22,8 @@
         .column { background: white; padding: 15px; display: flex; flex-direction: column; box-shadow: 0 2px 5px rgba(0,0,0,0.5); height: 100%; box-sizing: border-box; }
         
         .products-panel { flex: .5; border-top: 8px solid var(--primary);border-radius:20px; border-bottom: 8px solid var(--primary); border-left: 1px solid var(--primary); border-right: 1px solid var(--primary); }
-        .cart-panel { flex: 1; border-top: 8px solid var(--accent); border-radius:20px; border-bottom: 8px solid var(--accent); border-left: 1px solid var(--accent); border-right: 1px solid var(--accent); }
-        .checkout-panel { flex: 1; border-top: 8px solid var(--edit);border-radius:20px; border-bottom: 8px solid var(--edit); border-left: 1px solid var(--edit); border-right: 1px solid var(--edit); }
+        .cart-panel { flex: 1; border-top: 8px solid var(--accent); border-radius:20px; border-bottom: 8px solid var(--accent); border-left: 1px solid var(--accent); border-right: 1px solid var(--accent);}
+        .checkout-panel { flex: .5; border-top: 8px solid var(--edit);border-radius:20px; border-bottom: 8px solid var(--edit); border-left: 1px solid var(--edit); border-right: 1px solid var(--edit); }
 
         .scroll-list { flex: 1; overflow-y: auto; border: 1px solid #eee; margin-top: 10px; border-radius: 5px; }
         input, select, button { padding: 8px; margin: 5px 0; border: 1px solid #ddd; border-radius: 4px; }
@@ -712,10 +712,10 @@ function renderCart() {
                    style="width: 12px; flex: 1; text-align: right;font-size:16px; border:none; color: green; margin-left: 10px;" 
                    onchange="updateCartQty(${idx}, this.value)">
             
-            <span style="flex: 1; margin-left: 15px; text-align: left;">₱${(item.price * item.qty).toFixed(0)}</span>
+            <span style="flex: 1; margin-left: 15px; text-align: Center;">₱${(item.price * item.qty).toFixed(0)}</span>
            <button 
     onclick="cart.splice(${idx}, 1); renderCart();" 
-    style="flex: 1; text-align: left; background: none; border:none; color: red; cursor: pointer; font-size: 1rem;">
+    style="flex: 1; text-align: center; background: none; border:none; color: red; cursor: pointer; font-size: 1rem;">
     <i class="fas fa-trash" style="color: red;"></i>
 </button> 
 
