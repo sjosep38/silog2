@@ -18,12 +18,12 @@
         .nav-btn { border:none; background:rgba(255,255,255,0.1); color:#fff; padding: 8px 15px; border-radius: 4px; cursor:pointer;  transition: 0.3s; }
         .nav-btn:hover { background: rgba(255,255,255,0.2); }
 
-        .app-container { display: flex; flex: 1; gap: 5px; padding: 10px; box-sizing: border-box; overflow: hidden; max-height:800px;}
+        .app-container { display: flex; gap: 5px; padding: 10px; box-sizing: border-box; overflow: hidden; max-height:800px;}
         .column { background: white; padding: 15px; display: flex; flex-direction: column; box-shadow: 0 2px 5px rgba(0,0,0,0.5); height: 100%; box-sizing: border-box; }
         
-        .products-panel { flex:1; border-top: 8px solid var(--primary);border-radius:20px; border-bottom: 8px solid var(--primary); border-left: 1px solid var(--primary); border-right: 1px solid var(--primary); }
+        .products-panel { flex: 1; border-top: 8px solid var(--primary);border-radius:20px; border-bottom: 8px solid var(--primary); border-left: 1px solid var(--primary); border-right: 1px solid var(--primary); }
         .cart-panel { flex: 1; border-top: 8px solid var(--accent); border-radius:20px; border-bottom: 8px solid var(--accent); border-left: 1px solid var(--accent); border-right: 1px solid var(--accent); }
-        .checkout-panel { flex: .5; border-top: 8px solid var(--edit);border-radius:20px; border-bottom: 8px solid var(--edit); border-left: 1px solid var(--edit); border-right: 1px solid var(--edit); }
+        .checkout-panel { flex: 1; border-top: 8px solid var(--edit);border-radius:20px; border-bottom: 8px solid var(--edit); border-left: 1px solid var(--edit); border-right: 1px solid var(--edit); }
 
         .scroll-list { flex: 1; overflow-y: auto; border: 1px solid #eee; margin-top: 10px; border-radius: 5px; }
         input, select, button { padding: 8px; margin: 5px 0; border: 1px solid #ddd; border-radius: 4px; }
@@ -53,8 +53,8 @@
             #receipt-print { position: absolute; left: 0; top: 0; width: 58mm; display: block !important; }
         }
         
-        .input-group { position: relative; width: 250px; }
-        .input-group input { width: 91%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; outline: none; font-size: 16px; transition: border-color 0.3s; }
+        .input-group { position: relative; width: 150px; }
+        .input-group input { width: auto; padding: 10px; border: 1px solid #ccc; border-radius: 4px; outline: none; font-size: 16px; transition: border-color 0.3s; }
         .input-group label { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); background: white; padding: 0 5px; color: #999; pointer-events: none; transition: 0.3s ease all; }
         .input-group:hover label, .input-group input:focus + label, .input-group input:not(:placeholder-shown) + label { top: 0; font-size: 12px; color: #007bff; font-weight: bold; }
         .input-group input:focus { border-color: #007bff; }
@@ -282,16 +282,15 @@ background: #DEDEDE;
     </h2>
 </div>
     <p><center>Please enter the administrator password:</center></p>
-    <input type="password" id="password-input" value="" autofocus>
+    <input type="password" id="password-input" value="sv" autofocus>
     <div id="login-error" class="error-msg" style="display: none;">Incorrect Password</div>
     <button id="login-btn">Unlock System</button>
   </div>
 </div>
 
-<div id="app-container" style="display: none;">
-    </div>
+
 <h3 class="dashboard-header">
-    <span><i class="fas fa-cash-register"></i> MEI CAI WHOLESALE & RETAIL STORE <small style="font-weight: normal; opacity: 0.8; font-size: 0.7em;">POS v2.0</small></span>
+    <span><i class="fas fa-cash-register"></i> MEICAI STORE <small style="font-weight: normal; opacity: 0.8; font-size: 0.7em;">POS v2.0</small></span>
     <div>
 	<button onclick="openUtangModal()" style="background:rgba(255,255,255,0.1);color: white; padding: 8px ; cursor: pointer; border: none; border-radius: 4px;">
     <i class="fas fa-book"></i> CREDIT LEDGER
@@ -349,9 +348,6 @@ background: #DEDEDE;
             <select id="payMethod" style="width:100%; margin-bottom: 5px;font-size:16px;">
                 <option value="Cash">Cash</option>
                 <option value="GCash">GCash</option>
-                <!--<option value="Bank Transfer">Bank Transfer</option>
-				<option value="Debit Card">Debit Card</option>
-				<option value="Credit Card">Credit Card</option>-->
 				<option value="Credit Utang">Credit</option>
 			</select>
 			<label>Customer Name :</label>
